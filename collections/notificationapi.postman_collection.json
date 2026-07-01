@@ -1,0 +1,516 @@
+{
+  "item": [
+    {
+      "id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Send",
+      "description": {
+        "content": "Send and retract notifications across channels.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1000000-0000-4000-8000-000000000010",
+          "name": "Send a notification",
+          "request": {
+            "name": "Send a notification",
+            "description": {
+              "content": "Send a notification to a user across the channels configured for the notification type. Pass an ISO 8601 schedule to schedule for later.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sender",
+              "path": ["sender"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"order_shipped\",\n  \"to\": {\n    \"id\": \"user_123\",\n    \"email\": \"jane@example.com\",\n    \"number\": \"+15005550006\"\n  },\n  \"parameters\": {\n    \"orderNumber\": \"1043\",\n    \"trackingUrl\": \"https://example.com/track/1043\"\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [
+            {
+              "id": "a1000000-0000-4000-8000-000000000011",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "raw": "{{baseUrl}}/sender",
+                  "path": ["sender"],
+                  "host": ["{{baseUrl}}"]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"order_shipped\",\n  \"to\": { \"id\": \"user_123\", \"email\": \"jane@example.com\" }\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"trackingId\": \"3f9c1b2a-7d4e-4a0b-9f21-8c6e2d1a0b34\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "a1000000-0000-4000-8000-000000000020",
+          "name": "Retract a notification",
+          "request": {
+            "name": "Retract a notification",
+            "description": {
+              "content": "Un-send or delete a previously sent notification for a user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sender/retract",
+              "path": ["sender", "retract"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notificationId\": \"order_shipped\",\n  \"userId\": \"user_123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a2000000-0000-4000-8000-000000000001",
+      "name": "Schedule",
+      "description": {
+        "content": "Update or delete scheduled notifications.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a2000000-0000-4000-8000-000000000010",
+          "name": "Update a scheduled notification",
+          "request": {
+            "name": "Update a scheduled notification",
+            "description": {
+              "content": "Update a previously scheduled notification by its trackingId.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/schedule/:trackingId",
+              "path": ["schedule", ":trackingId"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [
+                { "key": "trackingId", "value": "3f9c1b2a-7d4e-4a0b-9f21-8c6e2d1a0b34" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schedule\": \"2026-08-01T14:38:03.509Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "a2000000-0000-4000-8000-000000000020",
+          "name": "Delete a scheduled notification",
+          "request": {
+            "name": "Delete a scheduled notification",
+            "description": {
+              "content": "Cancel a previously scheduled notification by its trackingId.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/schedule/:trackingId",
+              "path": ["schedule", ":trackingId"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [
+                { "key": "trackingId", "value": "3f9c1b2a-7d4e-4a0b-9f21-8c6e2d1a0b34" }
+              ]
+            },
+            "header": [],
+            "method": "DELETE",
+            "auth": null,
+            "body": {}
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a3000000-0000-4000-8000-000000000001",
+      "name": "Users",
+      "description": {
+        "content": "Identify and manage the users you notify.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a3000000-0000-4000-8000-000000000010",
+          "name": "Identify a user",
+          "request": {
+            "name": "Identify a user",
+            "description": {
+              "content": "Create or update a user with contact identifiers (email, number, tokens, timezone, Slack channel). Uses the per-user HMAC Authorization header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/:userId",
+              "path": ["users", ":userId"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [
+                { "key": "userId", "value": "user_123" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jane@example.com\",\n  \"number\": \"+15005550006\",\n  \"timezone\": \"America/New_York\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a4000000-0000-4000-8000-000000000001",
+      "name": "User Preferences",
+      "description": {
+        "content": "Read and write per-user channel and opt-out preferences.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a4000000-0000-4000-8000-000000000010",
+          "name": "Set user preferences",
+          "request": {
+            "name": "Set user preferences",
+            "description": {
+              "content": "Set per-notification, per-channel delivery preferences and opt-outs for a user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user_preferences/:userId",
+              "path": ["user_preferences", ":userId"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [
+                { "key": "userId", "value": "user_123" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  { \"notificationId\": \"order_shipped\", \"channel\": \"EMAIL\", \"delivery\": \"off\" },\n  { \"notificationId\": \"weekly_digest\", \"channel\": \"EMAIL\", \"delivery\": \"weekly\" }\n]",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "a4000000-0000-4000-8000-000000000020",
+          "name": "Delete stored preferences for a user",
+          "request": {
+            "name": "Delete stored preferences for a user",
+            "description": {
+              "content": "Delete stored preferences for a user and a given notificationId. Uses the per-user HMAC Authorization header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/:userId/preferences?notificationId=order_shipped",
+              "path": ["users", ":userId", "preferences"],
+              "host": ["{{baseUrl}}"],
+              "query": [
+                { "key": "notificationId", "value": "order_shipped" }
+              ],
+              "variable": [
+                { "key": "userId", "value": "user_123" }
+              ]
+            },
+            "header": [],
+            "method": "DELETE",
+            "auth": null,
+            "body": {}
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a5000000-0000-4000-8000-000000000001",
+      "name": "Notifications",
+      "description": {
+        "content": "Configure notifications and their subNotifications.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a5000000-0000-4000-8000-000000000010",
+          "name": "Create a subNotification",
+          "request": {
+            "name": "Create a subNotification",
+            "description": {
+              "content": "Create a subNotification (subcategory) within a notification.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications/:notificationId/subNotifications/:subNotificationId",
+              "path": ["notifications", ":notificationId", "subNotifications", ":subNotificationId"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [
+                { "key": "notificationId", "value": "project_updates" },
+                { "key": "subNotificationId", "value": "apollo" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Project Apollo updates\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "a5000000-0000-4000-8000-000000000020",
+          "name": "Delete a subNotification",
+          "request": {
+            "name": "Delete a subNotification",
+            "description": {
+              "content": "Delete a subNotification from a notification.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications/:notificationId/subNotifications/:subNotificationId",
+              "path": ["notifications", ":notificationId", "subNotifications", ":subNotificationId"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [
+                { "key": "notificationId", "value": "project_updates" },
+                { "key": "subNotificationId", "value": "apollo" }
+              ]
+            },
+            "header": [],
+            "method": "DELETE",
+            "auth": null,
+            "body": {}
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a6000000-0000-4000-8000-000000000001",
+      "name": "In-App Inbox",
+      "description": {
+        "content": "Read and update a user's in-app (INAPP_WEB) notifications.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a6000000-0000-4000-8000-000000000010",
+          "name": "Get a user's in-app notifications",
+          "request": {
+            "name": "Get a user's in-app notifications",
+            "description": {
+              "content": "Return the in-app (INAPP_WEB) inbox for a user, newest first, with pagination. Uses the per-user HMAC Authorization header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/:userId/notifications/INAPP_WEB?count=50",
+              "path": ["users", ":userId", "notifications", "INAPP_WEB"],
+              "host": ["{{baseUrl}}"],
+              "query": [
+                { "key": "count", "value": "50" }
+              ],
+              "variable": [
+                { "key": "userId", "value": "user_123" }
+              ]
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null,
+            "body": {}
+          },
+          "response": [
+            {
+              "id": "a6000000-0000-4000-8000-000000000011",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "raw": "{{baseUrl}}/users/:userId/notifications/INAPP_WEB",
+                  "path": ["users", ":userId", "notifications", "INAPP_WEB"],
+                  "host": ["{{baseUrl}}"]
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"notifications\": [\n    {\n      \"trackingId\": \"3f9c1b2a-7d4e-4a0b-9f21-8c6e2d1a0b34\",\n      \"title\": \"Your order has shipped\",\n      \"url\": \"https://example.com/track/1043\",\n      \"date\": \"2026-07-01T11:59:00.000Z\",\n      \"opened\": null\n    }\n  ],\n  \"oldestReceived\": \"2026-07-01T11:59:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "a6000000-0000-4000-8000-000000000020",
+          "name": "Update in-app notifications",
+          "request": {
+            "name": "Update in-app notifications",
+            "description": {
+              "content": "Mark in-app notifications opened, clicked, archived, actioned, or replied by trackingId. Uses the per-user HMAC Authorization header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/:userId/notifications/INAPP_WEB",
+              "path": ["users", ":userId", "notifications", "INAPP_WEB"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [
+                { "key": "userId", "value": "user_123" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trackingIds\": [\"3f9c1b2a-7d4e-4a0b-9f21-8c6e2d1a0b34\"],\n  \"opened\": \"2026-07-01T12:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a7000000-0000-4000-8000-000000000001",
+      "name": "Logs",
+      "description": {
+        "content": "Query delivery and event logs.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a7000000-0000-4000-8000-000000000010",
+          "name": "Query logs",
+          "request": {
+            "name": "Query logs",
+            "description": {
+              "content": "Query delivery and event logs with optional filters by date range, notification, channel, user, status, and trackingId.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/logs/query",
+              "path": ["logs", "query"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dateRangeFilter\": { \"startTime\": 1719792000, \"endTime\": 1719878400 },\n  \"channelFilter\": [\"EMAIL\", \"SMS\"],\n  \"statusFilter\": [\"sent\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.notificationapi.com/{{clientId}}",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "your_client_id",
+      "key": "clientId"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{clientId}}" },
+      { "key": "password", "value": "{{clientSecret}}" }
+    ]
+  },
+  "info": {
+    "_postman_id": "b0d1e2f3-a4b5-4c6d-8e7f-9a0b1c2d3e4f",
+    "name": "NotificationAPI REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "NotificationAPI REST API - multi-channel notifications, users, preferences, in-app inbox, scheduling, and logs. All calls are scoped to your clientId path segment and use HTTP Basic auth (clientId:clientSecret; per-user calls use clientId:userId:hmac).\n\nContact Support:\n Name: NotificationAPI Support\n Email: support@notificationapi.com",
+      "type": "text/plain"
+    }
+  }
+}

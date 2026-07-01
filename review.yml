@@ -1,0 +1,77 @@
+aid: notificationapi
+name: NotificationAPI
+review:
+  question: Does NotificationAPI expose a documented public WebSocket API?
+  answer: true
+  date: '2026-07-01'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    NotificationAPI's client-side (browser) SDK maintains a WebSocket
+    connection to deliver in-app inbox notifications and unread counts in
+    real time (routes such as inapp_web/notifications and
+    inapp_web/unread_count). This WebSocket is an internal transport of the
+    client SDK / in-app inbox component rather than a separately documented,
+    directly consumable public WebSocket API with a published contract. The
+    documented, developer-facing surface is the REST API under
+    https://api.notificationapi.com/{clientId}. An AsyncAPI document was not
+    authored because no standalone WebSocket contract is published for direct
+    integration; the equivalent read/update of the in-app inbox is available
+    over REST (GET/PATCH /users/{userId}/notifications/INAPP_WEB).
+findings:
+  summary: |
+    NotificationAPI is notifications infrastructure exposing a REST API scoped
+    to an account clientId at https://api.notificationapi.com/{clientId}, with
+    US, EU, and CA regional hosts. Authentication is HTTP Basic: account-level
+    calls use base64(clientId:clientSecret), while per-user calls (identify
+    user, in-app inbox, delete preferences) use base64(clientId:userId:hmac)
+    where the hmac is HMAC-SHA256 of the userId keyed with the clientSecret.
+    The service sends multi-channel notifications (email, SMS, mobile push,
+    web push, in-app inbox, automated voice call, Slack), manages users and
+    their preferences/opt-outs, configures notifications and subNotifications,
+    schedules and retracts notifications, and queries delivery logs. The
+    in-app inbox component uses a WebSocket internally for realtime delivery,
+    but the documented integration surface is REST; there is no separately
+    published public WebSocket contract.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.notificationapi.com/{clientId}
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: The client SDK / in-app inbox component uses a WebSocket internally for realtime in-app notifications, but no standalone public WebSocket API contract is published for direct integration. The REST GET/PATCH on /users/{userId}/notifications/INAPP_WEB covers the same inbox read/update.
+  endpointsConfirmedRest:
+    - POST   https://api.notificationapi.com/{clientId}/sender
+    - POST   https://api.notificationapi.com/{clientId}/sender/retract
+    - PATCH  https://api.notificationapi.com/{clientId}/schedule/{trackingId}
+    - DELETE https://api.notificationapi.com/{clientId}/schedule/{trackingId}
+    - POST   https://api.notificationapi.com/{clientId}/users/{userId}
+    - DELETE https://api.notificationapi.com/{clientId}/users/{userId}/preferences
+    - POST   https://api.notificationapi.com/{clientId}/user_preferences/{userId}
+    - PUT    https://api.notificationapi.com/{clientId}/notifications/{notificationId}/subNotifications/{subNotificationId}
+    - DELETE https://api.notificationapi.com/{clientId}/notifications/{notificationId}/subNotifications/{subNotificationId}
+    - GET    https://api.notificationapi.com/{clientId}/users/{userId}/notifications/INAPP_WEB
+    - PATCH  https://api.notificationapi.com/{clientId}/users/{userId}/notifications/INAPP_WEB
+    - POST   https://api.notificationapi.com/{clientId}/logs/query
+sources:
+  - url: https://docs.notificationapi.com
+    type: Documentation
+    note: Product and REST API reference; documents clientId-scoped base URL and Basic auth.
+  - url: https://github.com/notificationapi-com/notificationapi-node-server-sdk
+    type: SourceCode
+    note: Node server SDK (src/notificationapi.ts) — authoritative source for REST method-to-path mapping and per-user HMAC Authorization scheme.
+  - url: https://github.com/notificationapi-com/notificationapi-js-client-sdk
+    type: SourceCode
+    note: Browser client SDK — shows the internal WebSocket used by the in-app inbox component (inapp_web/notifications, inapp_web/unread_count).
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    The developer-facing contract is REST; the in-app inbox WebSocket is an
+    internal transport of the client SDK without a published standalone
+    contract, so no AsyncAPI document was authored. The seven documented REST
+    surfaces (Send, Schedule, Users/Identify, User Preferences, Notifications
+    Config, In-App Inbox, Logs) were captured in apis.yml and modeled in
+    openapi/notificationapi-openapi.yml.

@@ -1,0 +1,106 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: NotificationAPI
+providerId: notificationapi
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- Notifications
+- Messaging
+- Email
+- SMS
+- Push
+- In-App Inbox
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of NotificationAPI spend. NotificationAPI bills a tiered monthly
+  subscription anchored on monthly active users (MAU) and notification volume,
+  plus per-message metering for paid channels such as SMS and voice. Cost is
+  driven by how many distinct users are notified, how many notifications are
+  sent, and the channel mix. Optimization levers include respecting user
+  preferences and opt-outs, consolidating digests, and routing to lower-cost
+  channels (in-app / email) before SMS or voice.
+notes: >-
+  Per-tier prices, MAU caps, and per-message rates change; verify against the
+  NotificationAPI pricing page during reconciliation.
+sources:
+- https://www.notificationapi.com/pricing
+- https://docs.notificationapi.com
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: NotificationAPI
+serviceCategory: Developer Tools and Messaging
+billingModel:
+  pricingCategory: Subscription plus Usage
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: NotificationAPI
+  ServiceCategory: Developer Tools and Messaging
+  ProviderName: NotificationAPI
+  PublisherName: NotificationAPI
+  InvoiceIssuerName: NotificationAPI
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Subscription plus Usage
+meters:
+- name: monthly_active_users
+  description: Distinct users notified in the billing month, the primary plan metric.
+  unit: users
+  aggregation: distinct_count
+  dimensions:
+  - account
+- name: notifications_sent
+  description: Total notifications sent across all channels, counted against the plan volume allowance.
+  unit: notifications
+  aggregation: sum
+  dimensions:
+  - account
+  - notification
+  - channel
+- name: sms_messages
+  description: SMS messages sent, metered per message on top of the plan.
+  unit: messages
+  aggregation: sum
+  dimensions:
+  - account
+  - region
+- name: voice_calls
+  description: Automated voice calls placed, metered per call on top of the plan.
+  unit: calls
+  aggregation: sum
+  dimensions:
+  - account
+  - region
+- name: subscription_fee
+  description: Recurring monthly plan fee for the selected tier (Startup, Business, Enterprise).
+  unit: subscription
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+principles:
+- name: Visibility
+  description: Use the Logs API (POST /logs/query) and dashboard analytics to attribute spend by notification, channel, and user.
+- name: Allocation
+  description: Tag notifications by product area / team and map channel usage to internal cost centers.
+- name: Optimization
+  description: Honor user preferences and opt-outs, batch into digests, and prefer in-app and email over per-message SMS and voice to reduce metered spend.
+- name: Accountability
+  description: Assign owners per notification type and review MAU, volume, and channel spend monthly against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

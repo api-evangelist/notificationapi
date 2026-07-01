@@ -1,0 +1,68 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: NotificationAPI
+providerId: notificationapi
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- Notifications
+- Messaging
+- Email
+- SMS
+- Push
+- In-App Inbox
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  NotificationAPI enforces per-account request rate limits on the REST API and
+  bounds notification throughput by the monthly active user (MAU) and
+  notification-volume allowances of the account's plan. Downstream channel
+  providers (email, SMS, push) impose their own throughput ceilings. Specific
+  per-endpoint request-per-second values are not published and are not
+  reconciled in this artifact.
+notes: >-
+  Verify current request rate limits, MAU caps, and per-channel throughput in
+  the NotificationAPI dashboard and documentation on reconciliation; limits
+  rise with plan tier and Enterprise agreements.
+sources:
+- https://docs.notificationapi.com
+- https://www.notificationapi.com/pricing
+responseCodes:
+  throttled: 429
+limits:
+- name: REST API Requests
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Per-account request rate limit across the REST API; raises by plan tier.
+- name: Monthly Active Users (MAU)
+  scope: account
+  metric: users
+  limit: per plan allowance
+  notes: Notification throughput is bounded by the plan's MAU allowance.
+- name: Notification Volume
+  scope: account
+  metric: notifications
+  limit: per plan allowance
+  notes: Monthly notification-volume allowance per plan; overage may be metered or blocked.
+- name: SMS / Voice Throughput
+  scope: account
+  metric: messages
+  limit: downstream provider limits
+  notes: SMS and voice throughput is subject to carrier and downstream provider limits.
+- name: In-App Inbox Reads
+  scope: user
+  metric: requests
+  limit: see provider documentation
+  notes: Applies to GET /users/{userId}/notifications/INAPP_WEB used by the in-app inbox.
+policies:
+- name: Tiered Limits
+  description: Rate limits and MAU / volume allowances rise from Free to Startup, Business, and Enterprise.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

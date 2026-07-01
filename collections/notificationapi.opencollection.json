@@ -1,0 +1,236 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "NotificationAPI REST API",
+    "version": "2.8"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{clientId}}",
+      "password": "{{clientSecret}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Send",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send a notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.notificationapi.com/{{clientId}}/sender",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"type\": \"order_shipped\",\n  \"to\": { \"id\": \"user_123\", \"email\": \"jane@example.com\", \"number\": \"+15005550006\" },\n  \"parameters\": { \"orderNumber\": \"1043\" }\n}"
+            }
+          },
+          "docs": "Send a notification to a user across the channels configured for the notification type."
+        },
+        {
+          "info": {
+            "name": "Retract a notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.notificationapi.com/{{clientId}}/sender/retract",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"notificationId\": \"order_shipped\",\n  \"userId\": \"user_123\"\n}"
+            }
+          },
+          "docs": "Un-send or delete a previously sent notification for a user."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update a scheduled notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.notificationapi.com/{{clientId}}/schedule/{{trackingId}}",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"schedule\": \"2026-08-01T14:38:03.509Z\"\n}"
+            }
+          },
+          "docs": "Update a previously scheduled notification by its trackingId."
+        },
+        {
+          "info": {
+            "name": "Delete a scheduled notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.notificationapi.com/{{clientId}}/schedule/{{trackingId}}"
+          },
+          "docs": "Cancel a previously scheduled notification by its trackingId."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Identify a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.notificationapi.com/{{clientId}}/users/{{userId}}",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"email\": \"jane@example.com\",\n  \"number\": \"+15005550006\",\n  \"timezone\": \"America/New_York\"\n}"
+            }
+          },
+          "docs": "Create or update a user with contact identifiers. Uses the per-user HMAC Authorization header."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "User Preferences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Set user preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.notificationapi.com/{{clientId}}/user_preferences/{{userId}}",
+            "body": {
+              "type": "json",
+              "data": "[\n  { \"notificationId\": \"order_shipped\", \"channel\": \"EMAIL\", \"delivery\": \"off\" },\n  { \"notificationId\": \"weekly_digest\", \"channel\": \"EMAIL\", \"delivery\": \"weekly\" }\n]"
+            }
+          },
+          "docs": "Set per-notification, per-channel delivery preferences and opt-outs for a user."
+        },
+        {
+          "info": {
+            "name": "Delete stored preferences for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.notificationapi.com/{{clientId}}/users/{{userId}}/preferences?notificationId=order_shipped"
+          },
+          "docs": "Delete stored preferences for a user and a given notificationId. Uses the per-user HMAC Authorization header."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Notifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a subNotification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.notificationapi.com/{{clientId}}/notifications/{{notificationId}}/subNotifications/{{subNotificationId}}",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"title\": \"Project Apollo updates\"\n}"
+            }
+          },
+          "docs": "Create a subNotification (subcategory) within a notification."
+        },
+        {
+          "info": {
+            "name": "Delete a subNotification",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.notificationapi.com/{{clientId}}/notifications/{{notificationId}}/subNotifications/{{subNotificationId}}"
+          },
+          "docs": "Delete a subNotification from a notification."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "In-App Inbox",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a user's in-app notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.notificationapi.com/{{clientId}}/users/{{userId}}/notifications/INAPP_WEB?count=50"
+          },
+          "docs": "Return the in-app (INAPP_WEB) inbox for a user, newest first. Uses the per-user HMAC Authorization header."
+        },
+        {
+          "info": {
+            "name": "Update in-app notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.notificationapi.com/{{clientId}}/users/{{userId}}/notifications/INAPP_WEB",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"trackingIds\": [\"3f9c1b2a-7d4e-4a0b-9f21-8c6e2d1a0b34\"],\n  \"opened\": \"2026-07-01T12:00:00.000Z\"\n}"
+            }
+          },
+          "docs": "Mark in-app notifications opened, clicked, archived, actioned, or replied. Uses the per-user HMAC Authorization header."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Logs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.notificationapi.com/{{clientId}}/logs/query",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"dateRangeFilter\": { \"startTime\": 1719792000, \"endTime\": 1719878400 },\n  \"channelFilter\": [\"EMAIL\", \"SMS\"],\n  \"statusFilter\": [\"sent\"]\n}"
+            }
+          },
+          "docs": "Query delivery and event logs with optional filters."
+        }
+      ]
+    }
+  ]
+}

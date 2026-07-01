@@ -1,0 +1,180 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: NotificationAPI
+providerId: notificationapi
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- Notifications
+- Messaging
+- Email
+- SMS
+- Push
+- In-App Inbox
+- Plans
+description: >-
+  NotificationAPI uses tiered subscription plans anchored on monthly active
+  users (MAU) and notification volume, with paid channels (SMS, voice) metered
+  per message on top of the plan. A Free tier lets developers build and test;
+  Startup and Business tiers raise MAU / volume limits and add features; and
+  Enterprise is a custom contract. Exact prices and limits change - verify on
+  the NotificationAPI pricing page during reconciliation.
+notes: >-
+  Tier names and structure reflect NotificationAPI's published MAU-and-volume
+  based pricing model; specific dollar amounts and included volumes are
+  representative and must be reconciled against the live pricing page.
+sources:
+- https://www.notificationapi.com/pricing
+- https://docs.notificationapi.com
+plans:
+- id: notificationapi-free
+  name: Free
+  type: free
+  description: >-
+    For building and testing. Includes the REST API, in-app inbox component,
+    email and in-app channels, templates, and user preferences up to a small
+    monthly active user and notification-volume allowance.
+  entries:
+  - label: Monthly Active Users
+    name: mau
+    type: quota
+    metric: users
+    limit: included allowance
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0
+    userMultiplied: false
+  - label: Notification Volume
+    name: notifications
+    type: quota
+    metric: notifications
+    limit: included allowance
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0
+    userMultiplied: false
+  elements:
+  - name: REST API
+  - name: In-App Inbox
+  - name: Email Channel
+  - name: User Preferences
+  - name: Templates
+- id: notificationapi-startup
+  name: Startup
+  type: subscription
+  description: >-
+    For growing products. Higher MAU and notification-volume limits, additional
+    channels, and standard support. Paid channels (SMS, voice) are metered per
+    message on top of the subscription.
+  entries:
+  - label: Monthly Subscription
+    name: subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: see pricing page
+    userMultiplied: false
+  - label: Monthly Active Users
+    name: mau
+    type: quota
+    metric: users
+    limit: higher allowance
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included; overage per MAU
+    userMultiplied: false
+  - label: Notification Volume
+    name: notifications
+    type: quota
+    metric: notifications
+    limit: higher allowance
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included; overage per notification
+    userMultiplied: false
+  elements:
+  - name: Email Channel
+  - name: In-App Inbox
+  - name: Mobile Push
+  - name: Web Push
+  - name: Slack Channel
+  - name: Scheduling
+  - name: Logs
+- id: notificationapi-business
+  name: Business
+  type: subscription
+  description: >-
+    For scaling teams. Larger MAU and volume limits, advanced deliverability and
+    analytics, priority support, and full multi-channel including SMS and voice
+    (metered per message).
+  entries:
+  - label: Monthly Subscription
+    name: subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: see pricing page
+    userMultiplied: false
+  - label: SMS
+    name: sms
+    type: usage
+    metric: messages
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: metered per SMS
+    userMultiplied: false
+  - label: Voice Call
+    name: call
+    type: usage
+    metric: calls
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: metered per call
+    userMultiplied: false
+  elements:
+  - name: All Channels
+  - name: Advanced Analytics
+  - name: Priority Support
+  - name: Higher Rate Limits
+- id: notificationapi-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom volume commitments, regional data residency (US / EU / CA), SSO,
+    SLAs, dedicated support, and negotiated terms. Contact NotificationAPI sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Data Residency (US / EU / CA)
+  - name: SSO
+  - name: SLA
+  - name: Dedicated Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
