@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/notificationapi-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: HTTP Basic authentication. For account-level calls the username is your clientId
+    and the password is your clientSecret. Per-user calls (identify user, in-app inbox, delete
+    preferences) use `base64(clientId:userId:hmac)` where hmac is HMAC-SHA256(userId) keyed
+    with the clientSecret.
+  sources:
+  - openapi/notificationapi-openapi.yml

@@ -142,6 +142,12 @@ apis:
   description: Queries delivery and event logs filtered by date range, notification,
     channel, user, status, and trackingId via POST /logs/query.
 common:
+- type: DomainSecurity
+  url: security/notificationapi-domain-security.yml
+- type: Authentication
+  url: authentication/notificationapi-authentication.yml
+- url: https://www.pingram.io/blog
+  type: Blog
 - type: GitHubOrganization
   url: https://github.com/notificationapi-com
 - type: LinkedIn
