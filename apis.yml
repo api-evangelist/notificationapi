@@ -142,6 +142,8 @@ apis:
   description: Queries delivery and event logs filtered by date range, notification,
     channel, user, status, and trackingId via POST /logs/query.
 common:
+- type: AgenticAccess
+  url: agentic-access/notificationapi-agentic-access.yml
 - type: DomainSecurity
   url: security/notificationapi-domain-security.yml
 - type: Authentication
