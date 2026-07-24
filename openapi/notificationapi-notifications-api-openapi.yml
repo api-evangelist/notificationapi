@@ -1,0 +1,92 @@
+openapi: 3.0.3
+info:
+  title: NotificationAPI REST In-App Inbox Notifications API
+  description: NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.
+  termsOfService: https://www.notificationapi.com/terms
+  contact:
+    name: NotificationAPI Support
+    email: support@notificationapi.com
+    url: https://docs.notificationapi.com
+  version: '2.8'
+servers:
+- url: https://api.notificationapi.com/{clientId}
+  description: US region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.eu.notificationapi.com/{clientId}
+  description: EU region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.ca.notificationapi.com/{clientId}
+  description: Canada region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+security:
+- basicAuth: []
+tags:
+- name: Notifications
+  description: Configure notifications and their subNotifications.
+paths:
+  /notifications/{notificationId}/subNotifications/{subNotificationId}:
+    parameters:
+    - $ref: '#/components/parameters/NotificationId'
+    - $ref: '#/components/parameters/SubNotificationId'
+    put:
+      operationId: createSubNotification
+      tags:
+      - Notifications
+      summary: Create a subNotification
+      description: Creates a subNotification (a subcategory within a notification), for example a per-project or per-topic channel a user can subscribe to independently.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - title
+              properties:
+                title:
+                  type: string
+                  description: Human-readable title for the subNotification.
+            example:
+              title: Project Apollo updates
+      responses:
+        '200':
+          description: subNotification created.
+    delete:
+      operationId: deleteSubNotification
+      tags:
+      - Notifications
+      summary: Delete a subNotification
+      description: Deletes a subNotification from a notification.
+      responses:
+        '200':
+          description: subNotification deleted.
+components:
+  parameters:
+    SubNotificationId:
+      in: path
+      name: subNotificationId
+      required: true
+      schema:
+        type: string
+      description: The subNotification (subcategory) identifier.
+    NotificationId:
+      in: path
+      name: notificationId
+      required: true
+      schema:
+        type: string
+      description: The ID of the notification in NotificationAPI.
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. For account-level calls the username is your clientId and the password is your clientSecret. Per-user calls (identify user, in-app inbox, delete preferences) use `base64(clientId:userId:hmac)` where hmac is HMAC-SHA256(userId) keyed with the clientSecret.

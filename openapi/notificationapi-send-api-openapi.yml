@@ -1,0 +1,281 @@
+openapi: 3.0.3
+info:
+  title: NotificationAPI REST In-App Inbox Send API
+  description: NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.
+  termsOfService: https://www.notificationapi.com/terms
+  contact:
+    name: NotificationAPI Support
+    email: support@notificationapi.com
+    url: https://docs.notificationapi.com
+  version: '2.8'
+servers:
+- url: https://api.notificationapi.com/{clientId}
+  description: US region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.eu.notificationapi.com/{clientId}
+  description: EU region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.ca.notificationapi.com/{clientId}
+  description: Canada region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+security:
+- basicAuth: []
+tags:
+- name: Send
+  description: Send and retract notifications across channels.
+paths:
+  /sender:
+    post:
+      operationId: send
+      tags:
+      - Send
+      summary: Send a notification
+      description: Sends a notification to the specified user across the channels configured for the notification type. Supply an ISO 8601 `schedule` value to schedule the notification for future delivery instead of sending immediately.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendRequest'
+            example:
+              type: order_shipped
+              to:
+                id: user_123
+                email: jane@example.com
+                number: '+15005550006'
+              parameters:
+                orderNumber: '1043'
+                trackingUrl: https://example.com/track/1043
+      responses:
+        '200':
+          description: Notification accepted for delivery.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendResponse'
+        '202':
+          description: Accepted with a warning (e.g., missing channel identifier).
+        '401':
+          description: Missing or invalid credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /sender/retract:
+    post:
+      operationId: retract
+      tags:
+      - Send
+      summary: Retract a notification
+      description: Un-sends or deletes previously sent notifications for a user - for example an in-app notification that is no longer valid.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetractRequest'
+            example:
+              notificationId: order_shipped
+              userId: user_123
+      responses:
+        '200':
+          description: Notification retracted.
+        '401':
+          description: Missing or invalid credentials.
+components:
+  schemas:
+    SendRequest:
+      type: object
+      description: A request to send (or schedule) a notification. `type` names the notification configured in your dashboard; `to` is the recipient; `parameters` are merged into the templates.
+      properties:
+        type:
+          type: string
+          description: The notification type to send (formerly notificationId).
+        to:
+          $ref: '#/components/schemas/User'
+        parameters:
+          type: object
+          additionalProperties: true
+          description: Values merged into the notification templates (formerly mergeTags).
+        forceChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+          description: Override the channels used for this notification.
+        templateId:
+          type: string
+          description: Force a specific template instead of the channel default.
+        subNotificationId:
+          type: string
+          description: Target a subcategory within the notification.
+        schedule:
+          type: string
+          format: date-time
+          description: ISO 8601 datetime to schedule delivery, e.g. 2026-08-01T14:38:03.509Z.
+        email:
+          type: object
+          description: Inline email content overrides.
+          properties:
+            subject:
+              type: string
+            html:
+              type: string
+            previewText:
+              type: string
+            senderName:
+              type: string
+            senderEmail:
+              type: string
+        sms:
+          type: object
+          properties:
+            message:
+              type: string
+        call:
+          type: object
+          properties:
+            message:
+              type: string
+        inapp:
+          type: object
+          properties:
+            title:
+              type: string
+            url:
+              type: string
+            image:
+              type: string
+        web_push:
+          type: object
+          properties:
+            title:
+              type: string
+            message:
+              type: string
+            icon:
+              type: string
+            url:
+              type: string
+        mobile_push:
+          type: object
+          properties:
+            title:
+              type: string
+            message:
+              type: string
+        options:
+          type: object
+          description: Per-channel delivery options such as email reply-to, cc/bcc, fromName/fromAddress, attachments, and push priority.
+    RetractRequest:
+      type: object
+      required:
+      - notificationId
+      - userId
+      properties:
+        notificationId:
+          type: string
+          description: The notification to retract.
+        userId:
+          type: string
+          description: The user the notification was sent to.
+        subNotificationId:
+          type: string
+          description: Optional subcategory scope.
+    PushToken:
+      type: object
+      required:
+      - type
+      - token
+      - device
+      properties:
+        type:
+          type: string
+          enum:
+          - FCM
+          - APN
+          description: The push provider the token belongs to.
+        token:
+          type: string
+          description: The full push token string.
+        device:
+          type: object
+          properties:
+            device_id:
+              type: string
+            platform:
+              type: string
+            app_id:
+              type: string
+    Channel:
+      type: string
+      enum:
+      - EMAIL
+      - INAPP_WEB
+      - SMS
+      - CALL
+      - PUSH
+      - WEB_PUSH
+    User:
+      type: object
+      description: A user you notify.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The ID of the user in your system.
+        email:
+          type: string
+          description: Required for email notifications, otherwise optional.
+        number:
+          type: string
+          description: E.164 phone number for SMS/CALL, e.g. +15005550006. Common US/Canada formats are also accepted.
+        timezone:
+          type: string
+          description: The user's IANA timezone, e.g. America/New_York.
+        slackChannel:
+          type: string
+          description: Destination Slack channel, channel ID, or user ID for Slack notifications.
+        pushTokens:
+          type: array
+          description: Mobile push tokens (APN/FCM), one per device.
+          items:
+            $ref: '#/components/schemas/PushToken'
+        webPushTokens:
+          type: array
+          description: Web push subscription tokens, one per browser.
+          items:
+            type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        error:
+          type: string
+    SendResponse:
+      type: object
+      properties:
+        trackingId:
+          type: string
+          description: Identifier for this send, usable to retract, schedule, or query logs.
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. For account-level calls the username is your clientId and the password is your clientSecret. Per-user calls (identify user, in-app inbox, delete preferences) use `base64(clientId:userId:hmac)` where hmac is HMAC-SHA256(userId) keyed with the clientSecret.

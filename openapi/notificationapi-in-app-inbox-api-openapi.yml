@@ -1,0 +1,167 @@
+openapi: 3.0.3
+info:
+  title: NotificationAPI REST In-App Inbox API
+  description: NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.
+  termsOfService: https://www.notificationapi.com/terms
+  contact:
+    name: NotificationAPI Support
+    email: support@notificationapi.com
+    url: https://docs.notificationapi.com
+  version: '2.8'
+servers:
+- url: https://api.notificationapi.com/{clientId}
+  description: US region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.eu.notificationapi.com/{clientId}
+  description: EU region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.ca.notificationapi.com/{clientId}
+  description: Canada region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+security:
+- basicAuth: []
+tags:
+- name: In-App Inbox
+  description: Read and update a user's in-app (INAPP_WEB) notifications.
+paths:
+  /users/{userId}/notifications/INAPP_WEB:
+    parameters:
+    - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: getInAppNotifications
+      tags:
+      - In-App Inbox
+      summary: Get a user's in-app notifications
+      description: Returns the in-app (INAPP_WEB) notification inbox for a user, ordered newest first, for rendering the in-app inbox component. Supports pagination with `before` and `count`. Authenticated with the per-user HMAC Authorization header.
+      parameters:
+      - in: query
+        name: count
+        required: false
+        schema:
+          type: integer
+          default: 50
+        description: Maximum number of notifications to return.
+      - in: query
+        name: before
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Return notifications older than this ISO 8601 timestamp, for pagination.
+      responses:
+        '200':
+          description: The user's in-app notifications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InAppNotificationsResponse'
+    patch:
+      operationId: updateInAppNotifications
+      tags:
+      - In-App Inbox
+      summary: Update in-app notifications
+      description: Marks one or more in-app notifications (by trackingId) as opened, clicked, archived, or actioned, or attaches a reply. Authenticated with the per-user HMAC Authorization header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InAppNotificationPatchRequest'
+            example:
+              trackingIds:
+              - 3f9c1b2a-7d4e-4a0b-9f21-8c6e2d1a0b34
+              opened: '2026-07-01T12:00:00.000Z'
+      responses:
+        '200':
+          description: In-app notifications updated.
+components:
+  parameters:
+    UserId:
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+      description: The ID of the user in your system.
+  schemas:
+    InAppNotificationsResponse:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/InAppNotification'
+        oldestReceived:
+          type: string
+          format: date-time
+          description: Timestamp of the oldest returned notification, for pagination.
+    InAppNotification:
+      type: object
+      properties:
+        trackingId:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        image:
+          type: string
+        date:
+          type: string
+          format: date-time
+        opened:
+          type: string
+          format: date-time
+        clicked:
+          type: string
+          format: date-time
+        archived:
+          type: string
+          format: date-time
+    InAppNotificationPatchRequest:
+      type: object
+      required:
+      - trackingIds
+      properties:
+        trackingIds:
+          type: array
+          items:
+            type: string
+          description: The trackingIds of the in-app notifications to update.
+        opened:
+          type: string
+          format: date-time
+        clicked:
+          type: string
+          format: date-time
+        archived:
+          type: string
+          format: date-time
+        actioned1:
+          type: string
+          format: date-time
+        actioned2:
+          type: string
+          format: date-time
+        reply:
+          type: object
+          properties:
+            date:
+              type: string
+              format: date-time
+            message:
+              type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. For account-level calls the username is your clientId and the password is your clientSecret. Per-user calls (identify user, in-app inbox, delete preferences) use `base64(clientId:userId:hmac)` where hmac is HMAC-SHA256(userId) keyed with the clientSecret.

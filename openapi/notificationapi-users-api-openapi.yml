@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: NotificationAPI REST In-App Inbox Users API
+  description: NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.
+  termsOfService: https://www.notificationapi.com/terms
+  contact:
+    name: NotificationAPI Support
+    email: support@notificationapi.com
+    url: https://docs.notificationapi.com
+  version: '2.8'
+servers:
+- url: https://api.notificationapi.com/{clientId}
+  description: US region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.eu.notificationapi.com/{clientId}
+  description: EU region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.ca.notificationapi.com/{clientId}
+  description: Canada region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+security:
+- basicAuth: []
+tags:
+- name: Users
+  description: Identify and manage the users you notify.
+paths:
+  /users/{userId}:
+    parameters:
+    - $ref: '#/components/parameters/UserId'
+    post:
+      operationId: identifyUser
+      tags:
+      - Users
+      summary: Identify a user
+      description: Creates or updates a user record with contact identifiers (email, number, push/web-push tokens, timezone, Slack channel). This request is authenticated with a per-user HMAC signature in the Authorization header (`Basic base64(clientId:userId:hmac)`) so it may also be called from trusted server contexts on behalf of a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
+            example:
+              email: jane@example.com
+              number: '+15005550006'
+              timezone: America/New_York
+      responses:
+        '200':
+          description: User identified (created or updated).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Missing or invalid credentials.
+components:
+  schemas:
+    UserData:
+      type: object
+      description: The mutable fields of a user, used on identify.
+      properties:
+        email:
+          type: string
+        number:
+          type: string
+        timezone:
+          type: string
+        slackChannel:
+          type: string
+        pushTokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/PushToken'
+        webPushTokens:
+          type: array
+          items:
+            type: object
+    User:
+      type: object
+      description: A user you notify.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The ID of the user in your system.
+        email:
+          type: string
+          description: Required for email notifications, otherwise optional.
+        number:
+          type: string
+          description: E.164 phone number for SMS/CALL, e.g. +15005550006. Common US/Canada formats are also accepted.
+        timezone:
+          type: string
+          description: The user's IANA timezone, e.g. America/New_York.
+        slackChannel:
+          type: string
+          description: Destination Slack channel, channel ID, or user ID for Slack notifications.
+        pushTokens:
+          type: array
+          description: Mobile push tokens (APN/FCM), one per device.
+          items:
+            $ref: '#/components/schemas/PushToken'
+        webPushTokens:
+          type: array
+          description: Web push subscription tokens, one per browser.
+          items:
+            type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PushToken:
+      type: object
+      required:
+      - type
+      - token
+      - device
+      properties:
+        type:
+          type: string
+          enum:
+          - FCM
+          - APN
+          description: The push provider the token belongs to.
+        token:
+          type: string
+          description: The full push token string.
+        device:
+          type: object
+          properties:
+            device_id:
+              type: string
+            platform:
+              type: string
+            app_id:
+              type: string
+  parameters:
+    UserId:
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+      description: The ID of the user in your system.
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. For account-level calls the username is your clientId and the password is your clientSecret. Per-user calls (identify user, in-app inbox, delete preferences) use `base64(clientId:userId:hmac)` where hmac is HMAC-SHA256(userId) keyed with the clientSecret.

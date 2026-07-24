@@ -1,0 +1,134 @@
+openapi: 3.0.3
+info:
+  title: NotificationAPI REST In-App Inbox User Preferences API
+  description: NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.
+  termsOfService: https://www.notificationapi.com/terms
+  contact:
+    name: NotificationAPI Support
+    email: support@notificationapi.com
+    url: https://docs.notificationapi.com
+  version: '2.8'
+servers:
+- url: https://api.notificationapi.com/{clientId}
+  description: US region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.eu.notificationapi.com/{clientId}
+  description: EU region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.ca.notificationapi.com/{clientId}
+  description: Canada region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+security:
+- basicAuth: []
+tags:
+- name: User Preferences
+  description: Read and write per-user channel and opt-out preferences.
+paths:
+  /users/{userId}/preferences:
+    parameters:
+    - $ref: '#/components/parameters/UserId'
+    delete:
+      operationId: deleteUserPreferences
+      tags:
+      - User Preferences
+      summary: Delete stored preferences for a user
+      description: Deletes any stored preferences for a user and a given notificationId (optionally scoped to a subNotificationId).
+      parameters:
+      - in: query
+        name: notificationId
+        required: true
+        schema:
+          type: string
+        description: The notification whose stored preferences should be deleted.
+      - in: query
+        name: subNotificationId
+        required: false
+        schema:
+          type: string
+        description: Optional subNotification scope.
+      responses:
+        '200':
+          description: Preferences deleted.
+  /user_preferences/{userId}:
+    parameters:
+    - $ref: '#/components/parameters/UserId'
+    post:
+      operationId: setUserPreferences
+      tags:
+      - User Preferences
+      summary: Set user preferences
+      description: Sets per-notification, per-channel delivery preferences and opt-outs for a user. The body is an array of preference objects.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserPreference'
+            example:
+            - notificationId: order_shipped
+              channel: EMAIL
+              delivery: 'off'
+            - notificationId: weekly_digest
+              channel: EMAIL
+              delivery: weekly
+      responses:
+        '200':
+          description: Preferences saved.
+components:
+  schemas:
+    UserPreference:
+      type: object
+      required:
+      - notificationId
+      properties:
+        notificationId:
+          type: string
+          description: The notification the preference applies to.
+        channel:
+          $ref: '#/components/schemas/Channel'
+        delivery:
+          type: string
+          enum:
+          - 'off'
+          - instant
+          - hourly
+          - daily
+          - weekly
+          - monthly
+          description: Delivery cadence, or off to opt out of the channel.
+        subNotificationId:
+          type: string
+          description: Optional subcategory scope.
+    Channel:
+      type: string
+      enum:
+      - EMAIL
+      - INAPP_WEB
+      - SMS
+      - CALL
+      - PUSH
+      - WEB_PUSH
+  parameters:
+    UserId:
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+      description: The ID of the user in your system.
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. For account-level calls the username is your clientId and the password is your clientSecret. Per-user calls (identify user, in-app inbox, delete preferences) use `base64(clientId:userId:hmac)` where hmac is HMAC-SHA256(userId) keyed with the clientSecret.

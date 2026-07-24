@@ -1,0 +1,133 @@
+openapi: 3.0.3
+info:
+  title: NotificationAPI REST In-App Inbox Logs API
+  description: NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.
+  termsOfService: https://www.notificationapi.com/terms
+  contact:
+    name: NotificationAPI Support
+    email: support@notificationapi.com
+    url: https://docs.notificationapi.com
+  version: '2.8'
+servers:
+- url: https://api.notificationapi.com/{clientId}
+  description: US region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.eu.notificationapi.com/{clientId}
+  description: EU region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+- url: https://api.ca.notificationapi.com/{clientId}
+  description: Canada region
+  variables:
+    clientId:
+      default: your_client_id
+      description: Your NotificationAPI account clientId.
+security:
+- basicAuth: []
+tags:
+- name: Logs
+  description: Query delivery and event logs.
+paths:
+  /logs/query:
+    post:
+      operationId: queryLogs
+      tags:
+      - Logs
+      summary: Query logs
+      description: Queries delivery and event logs with optional filters by date range, notification, channel, user, status, and trackingId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryLogsRequest'
+            example:
+              dateRangeFilter:
+                startTime: 1719792000
+                endTime: 1719878400
+              channelFilter:
+              - EMAIL
+              - SMS
+              statusFilter:
+              - sent
+      responses:
+        '200':
+          description: Matching log entries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryLogsResponse'
+components:
+  schemas:
+    QueryLogsResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            type: object
+            properties:
+              trackingId:
+                type: string
+              notificationId:
+                type: string
+              userId:
+                type: string
+              channel:
+                $ref: '#/components/schemas/Channel'
+              status:
+                type: string
+              date:
+                type: string
+                format: date-time
+    Channel:
+      type: string
+      enum:
+      - EMAIL
+      - INAPP_WEB
+      - SMS
+      - CALL
+      - PUSH
+      - WEB_PUSH
+    QueryLogsRequest:
+      type: object
+      properties:
+        dateRangeFilter:
+          type: object
+          properties:
+            startTime:
+              type: integer
+              description: Unix timestamp start of the range.
+            endTime:
+              type: integer
+              description: Unix timestamp end of the range.
+        notificationFilter:
+          type: array
+          items:
+            type: string
+        channelFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+        userFilter:
+          type: array
+          items:
+            type: string
+        statusFilter:
+          type: array
+          items:
+            type: string
+        trackingIds:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. For account-level calls the username is your clientId and the password is your clientSecret. Per-user calls (identify user, in-app inbox, delete preferences) use `base64(clientId:userId:hmac)` where hmac is HMAC-SHA256(userId) keyed with the clientSecret.
