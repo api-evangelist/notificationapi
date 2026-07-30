@@ -8,7 +8,20 @@ description: NotificationAPI is notifications infrastructure for developers. A s
   managing user identities, per-user preferences and opt-outs, templates, scheduling,
   and delivery logs. All calls are scoped to a clientId and authenticated with HTTP
   Basic auth.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/notificationapi.png
 tags:
 - Notifications
 - Messaging
@@ -20,127 +33,188 @@ created: '2026-07-01'
 modified: '2026-07-01'
 specificationVersion: '0.19'
 apis:
-- aid: notificationapi:notificationapi-send-api
-  name: NotificationAPI Send API
-  tags:
-  - Send
-  - Notifications
-  - Multi-Channel
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.notificationapi.com/reference/send
-  baseURL: https://api.notificationapi.com/{clientId}
-  properties:
-  - url: https://docs.notificationapi.com/reference/send
-    type: Documentation
-  - url: https://docs.notificationapi.com/reference/api-reference
-    type: APIReference
-  - url: openapi/notificationapi-openapi.yml
-    type: OpenAPI
-  description: Sends a notification to a user across the channels configured for the
-    notification type - email, SMS, push, web push, in-app inbox, voice call, and
-    Slack - with template parameters, per-channel overrides, and retract support via
-    POST /sender and POST /sender/retract.
-- aid: notificationapi:notificationapi-schedule-api
-  name: NotificationAPI Schedule API
-  tags:
-  - Schedule
-  - Notifications
-  - Delayed Delivery
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.notificationapi.com/reference/schedule
-  baseURL: https://api.notificationapi.com/{clientId}
-  properties:
-  - url: https://docs.notificationapi.com/reference/schedule
-    type: Documentation
-  - url: openapi/notificationapi-openapi.yml
-    type: OpenAPI
-  description: Schedules notifications for future delivery by passing an ISO 8601 schedule
-    value to the Send API, then updates or cancels them by trackingId via PATCH and
-    DELETE /schedule/{trackingId}.
-- aid: notificationapi:notificationapi-users-identify-api
-  name: NotificationAPI Users Identify API
-  tags:
-  - Users
-  - Identify
-  - Contacts
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.notificationapi.com/reference/identify-user
-  baseURL: https://api.notificationapi.com/{clientId}
-  properties:
-  - url: https://docs.notificationapi.com/reference/identify-user
-    type: Documentation
-  - url: openapi/notificationapi-openapi.yml
-    type: OpenAPI
-  description: Creates or updates the users you notify with their contact identifiers
-    - email, phone number, push and web-push tokens, timezone, and Slack channel -
-    via POST /users/{userId}, authenticated with a per-user HMAC signature.
-- aid: notificationapi:notificationapi-user-preferences-api
-  name: NotificationAPI User Preferences API
-  tags:
-  - Preferences
-  - Opt-Out
-  - Subscriptions
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.notificationapi.com/reference/set-user-preferences
-  baseURL: https://api.notificationapi.com/{clientId}
-  properties:
-  - url: https://docs.notificationapi.com/reference/set-user-preferences
-    type: Documentation
-  - url: openapi/notificationapi-openapi.yml
-    type: OpenAPI
-  description: Sets and deletes per-user, per-notification, per-channel delivery preferences
-    and opt-outs - off/instant/hourly/daily/weekly/monthly - via POST /user_preferences/{userId}
-    and DELETE /users/{userId}/preferences.
-- aid: notificationapi:notificationapi-notifications-config-api
-  name: NotificationAPI Notifications Config API
-  tags:
-  - Notifications
-  - Configuration
-  - SubNotifications
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.notificationapi.com/reference/create-sub-notification
-  baseURL: https://api.notificationapi.com/{clientId}
-  properties:
-  - url: https://docs.notificationapi.com/reference/create-sub-notification
-    type: Documentation
-  - url: openapi/notificationapi-openapi.yml
-    type: OpenAPI
-  description: Configures notifications and their subNotifications - independently
-    subscribable subcategories such as per-project or per-topic channels - via PUT
-    and DELETE /notifications/{notificationId}/subNotifications/{subNotificationId}.
 - aid: notificationapi:notificationapi-in-app-inbox-api
   name: NotificationAPI In-App Inbox API
+  description: Read and update a user's in-app (INAPP_WEB) notifications.
+  humanURL: https://docs.notificationapi.com/reference/send
+  baseURL: https://api.notificationapi.com/{clientId}
   tags:
   - In-App Inbox
-  - Notifications
-  - Read State
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.notificationapi.com/reference/in-app-notifications
-  baseURL: https://api.notificationapi.com/{clientId}
   properties:
-  - url: https://docs.notificationapi.com/reference/in-app-notifications
-    type: Documentation
-  - url: openapi/notificationapi-openapi.yml
-    type: OpenAPI
-  description: Powers the drop-in in-app inbox component - reads a user's INAPP_WEB
-    notifications with pagination and marks them opened, clicked, archived, actioned,
-    or replied via GET and PATCH /users/{userId}/notifications/INAPP_WEB.
+  - type: OpenAPI
+    url: openapi/notificationapi-in-app-inbox-api-openapi.yml
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/send
+  - type: APIReference
+    url: https://docs.notificationapi.com/reference/api-reference
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/schedule
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/identify-user
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/set-user-preferences
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/create-sub-notification
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/in-app-notifications
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/query-logs
 - aid: notificationapi:notificationapi-logs-api
   name: NotificationAPI Logs API
+  description: Query delivery and event logs.
+  humanURL: https://docs.notificationapi.com/reference/send
+  baseURL: https://api.notificationapi.com/{clientId}
   tags:
   - Logs
-  - Analytics
-  - Delivery
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.notificationapi.com/reference/query-logs
-  baseURL: https://api.notificationapi.com/{clientId}
   properties:
-  - url: https://docs.notificationapi.com/reference/query-logs
-    type: Documentation
-  - url: openapi/notificationapi-openapi.yml
-    type: OpenAPI
-  description: Queries delivery and event logs filtered by date range, notification,
-    channel, user, status, and trackingId via POST /logs/query.
+  - type: OpenAPI
+    url: openapi/notificationapi-logs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/send
+  - type: APIReference
+    url: https://docs.notificationapi.com/reference/api-reference
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/schedule
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/identify-user
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/set-user-preferences
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/create-sub-notification
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/in-app-notifications
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/query-logs
+- aid: notificationapi:notificationapi-notifications-api
+  name: NotificationAPI Notifications API
+  description: Configure notifications and their subNotifications.
+  humanURL: https://docs.notificationapi.com/reference/send
+  baseURL: https://api.notificationapi.com/{clientId}
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/notificationapi-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/send
+  - type: APIReference
+    url: https://docs.notificationapi.com/reference/api-reference
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/schedule
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/identify-user
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/set-user-preferences
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/create-sub-notification
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/in-app-notifications
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/query-logs
+- aid: notificationapi:notificationapi-schedule-api
+  name: NotificationAPI Schedule API
+  description: Update or delete scheduled notifications.
+  humanURL: https://docs.notificationapi.com/reference/send
+  baseURL: https://api.notificationapi.com/{clientId}
+  tags:
+  - Schedule
+  properties:
+  - type: OpenAPI
+    url: openapi/notificationapi-schedule-api-openapi.yml
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/send
+  - type: APIReference
+    url: https://docs.notificationapi.com/reference/api-reference
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/schedule
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/identify-user
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/set-user-preferences
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/create-sub-notification
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/in-app-notifications
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/query-logs
+- aid: notificationapi:notificationapi-send-api
+  name: NotificationAPI Send API
+  description: Send and retract notifications across channels.
+  humanURL: https://docs.notificationapi.com/reference/send
+  baseURL: https://api.notificationapi.com/{clientId}
+  tags:
+  - Send
+  properties:
+  - type: OpenAPI
+    url: openapi/notificationapi-send-api-openapi.yml
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/send
+  - type: APIReference
+    url: https://docs.notificationapi.com/reference/api-reference
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/schedule
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/identify-user
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/set-user-preferences
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/create-sub-notification
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/in-app-notifications
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/query-logs
+- aid: notificationapi:notificationapi-user-preferences-api
+  name: NotificationAPI User Preferences API
+  description: Read and write per-user channel and opt-out preferences.
+  humanURL: https://docs.notificationapi.com/reference/send
+  baseURL: https://api.notificationapi.com/{clientId}
+  tags:
+  - User Preferences
+  properties:
+  - type: OpenAPI
+    url: openapi/notificationapi-user-preferences-api-openapi.yml
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/send
+  - type: APIReference
+    url: https://docs.notificationapi.com/reference/api-reference
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/schedule
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/identify-user
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/set-user-preferences
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/create-sub-notification
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/in-app-notifications
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/query-logs
+- aid: notificationapi:notificationapi-users-api
+  name: NotificationAPI Users API
+  description: Identify and manage the users you notify.
+  humanURL: https://docs.notificationapi.com/reference/send
+  baseURL: https://api.notificationapi.com/{clientId}
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/notificationapi-users-api-openapi.yml
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/send
+  - type: APIReference
+    url: https://docs.notificationapi.com/reference/api-reference
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/schedule
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/identify-user
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/set-user-preferences
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/create-sub-notification
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/in-app-notifications
+  - type: Documentation
+    url: https://docs.notificationapi.com/reference/query-logs
 common:
 - type: AgenticAccess
   url: agentic-access/notificationapi-agentic-access.yml
