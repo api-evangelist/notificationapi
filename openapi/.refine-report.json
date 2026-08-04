@@ -1,0 +1,26 @@
+{
+  "provider": "notificationapi",
+  "sources": [
+    "notificationapi-in-app-inbox-api-openapi.yml",
+    "notificationapi-logs-api-openapi.yml",
+    "notificationapi-notifications-api-openapi.yml",
+    "notificationapi-schedule-api-openapi.yml",
+    "notificationapi-send-api-openapi.yml",
+    "notificationapi-user-preferences-api-openapi.yml",
+    "notificationapi-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "notificationapi-in-app-inbox-api-openapi.yml",
+    "notificationapi-logs-api-openapi.yml",
+    "notificationapi-notifications-api-openapi.yml",
+    "notificationapi-schedule-api-openapi.yml",
+    "notificationapi-send-api-openapi.yml",
+    "notificationapi-user-preferences-api-openapi.yml",
+    "notificationapi-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

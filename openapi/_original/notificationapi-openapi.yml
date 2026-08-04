@@ -1,0 +1,760 @@
+openapi: 3.0.3
+info:
+  title: NotificationAPI REST API
+  description: >-
+    NotificationAPI is notifications infrastructure for developers. A single
+    REST API sends multi-channel notifications - email, SMS, mobile push, web
+    push, in-app inbox, automated voice call, and Slack - manages user
+    identities, enforces per-user notification preferences and opt-outs,
+    schedules and retracts notifications, and exposes delivery logs. All
+    endpoints are scoped to your account via the clientId path segment and
+    authenticated with HTTP Basic auth using clientId:clientSecret.
+  termsOfService: https://www.notificationapi.com/terms
+  contact:
+    name: NotificationAPI Support
+    email: support@notificationapi.com
+    url: https://docs.notificationapi.com
+  version: '2.8'
+servers:
+  - url: https://api.notificationapi.com/{clientId}
+    description: US region
+    variables:
+      clientId:
+        default: your_client_id
+        description: Your NotificationAPI account clientId.
+  - url: https://api.eu.notificationapi.com/{clientId}
+    description: EU region
+    variables:
+      clientId:
+        default: your_client_id
+        description: Your NotificationAPI account clientId.
+  - url: https://api.ca.notificationapi.com/{clientId}
+    description: Canada region
+    variables:
+      clientId:
+        default: your_client_id
+        description: Your NotificationAPI account clientId.
+security:
+  - basicAuth: []
+tags:
+  - name: Send
+    description: Send and retract notifications across channels.
+  - name: Schedule
+    description: Update or delete scheduled notifications.
+  - name: Users
+    description: Identify and manage the users you notify.
+  - name: User Preferences
+    description: Read and write per-user channel and opt-out preferences.
+  - name: Notifications
+    description: Configure notifications and their subNotifications.
+  - name: In-App Inbox
+    description: Read and update a user's in-app (INAPP_WEB) notifications.
+  - name: Logs
+    description: Query delivery and event logs.
+paths:
+  /sender:
+    post:
+      operationId: send
+      tags:
+        - Send
+      summary: Send a notification
+      description: >-
+        Sends a notification to the specified user across the channels
+        configured for the notification type. Supply an ISO 8601 `schedule`
+        value to schedule the notification for future delivery instead of
+        sending immediately.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendRequest'
+            example:
+              type: order_shipped
+              to:
+                id: user_123
+                email: jane@example.com
+                number: '+15005550006'
+              parameters:
+                orderNumber: '1043'
+                trackingUrl: https://example.com/track/1043
+      responses:
+        '200':
+          description: Notification accepted for delivery.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendResponse'
+        '202':
+          description: Accepted with a warning (e.g., missing channel identifier).
+        '401':
+          description: Missing or invalid credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /sender/retract:
+    post:
+      operationId: retract
+      tags:
+        - Send
+      summary: Retract a notification
+      description: >-
+        Un-sends or deletes previously sent notifications for a user - for
+        example an in-app notification that is no longer valid.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetractRequest'
+            example:
+              notificationId: order_shipped
+              userId: user_123
+      responses:
+        '200':
+          description: Notification retracted.
+        '401':
+          description: Missing or invalid credentials.
+  /schedule/{trackingId}:
+    parameters:
+      - $ref: '#/components/parameters/TrackingId'
+    patch:
+      operationId: updateSchedule
+      tags:
+        - Schedule
+      summary: Update a scheduled notification
+      description: Updates a previously scheduled notification by its trackingId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendRequest'
+            example:
+              schedule: '2026-08-01T14:38:03.509Z'
+      responses:
+        '200':
+          description: Scheduled notification updated.
+        '404':
+          description: No scheduled notification found for the trackingId.
+    delete:
+      operationId: deleteSchedule
+      tags:
+        - Schedule
+      summary: Delete a scheduled notification
+      description: Cancels a previously scheduled notification by its trackingId.
+      responses:
+        '200':
+          description: Scheduled notification deleted.
+        '404':
+          description: No scheduled notification found for the trackingId.
+  /users/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    post:
+      operationId: identifyUser
+      tags:
+        - Users
+      summary: Identify a user
+      description: >-
+        Creates or updates a user record with contact identifiers (email,
+        number, push/web-push tokens, timezone, Slack channel). This request is
+        authenticated with a per-user HMAC signature in the Authorization
+        header (`Basic base64(clientId:userId:hmac)`) so it may also be called
+        from trusted server contexts on behalf of a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
+            example:
+              email: jane@example.com
+              number: '+15005550006'
+              timezone: America/New_York
+      responses:
+        '200':
+          description: User identified (created or updated).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Missing or invalid credentials.
+  /users/{userId}/preferences:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    delete:
+      operationId: deleteUserPreferences
+      tags:
+        - User Preferences
+      summary: Delete stored preferences for a user
+      description: >-
+        Deletes any stored preferences for a user and a given notificationId
+        (optionally scoped to a subNotificationId).
+      parameters:
+        - in: query
+          name: notificationId
+          required: true
+          schema:
+            type: string
+          description: The notification whose stored preferences should be deleted.
+        - in: query
+          name: subNotificationId
+          required: false
+          schema:
+            type: string
+          description: Optional subNotification scope.
+      responses:
+        '200':
+          description: Preferences deleted.
+  /user_preferences/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    post:
+      operationId: setUserPreferences
+      tags:
+        - User Preferences
+      summary: Set user preferences
+      description: >-
+        Sets per-notification, per-channel delivery preferences and opt-outs for
+        a user. The body is an array of preference objects.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserPreference'
+            example:
+              - notificationId: order_shipped
+                channel: EMAIL
+                delivery: 'off'
+              - notificationId: weekly_digest
+                channel: EMAIL
+                delivery: weekly
+      responses:
+        '200':
+          description: Preferences saved.
+  /notifications/{notificationId}/subNotifications/{subNotificationId}:
+    parameters:
+      - $ref: '#/components/parameters/NotificationId'
+      - $ref: '#/components/parameters/SubNotificationId'
+    put:
+      operationId: createSubNotification
+      tags:
+        - Notifications
+      summary: Create a subNotification
+      description: >-
+        Creates a subNotification (a subcategory within a notification), for
+        example a per-project or per-topic channel a user can subscribe to
+        independently.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                  description: Human-readable title for the subNotification.
+            example:
+              title: Project Apollo updates
+      responses:
+        '200':
+          description: subNotification created.
+    delete:
+      operationId: deleteSubNotification
+      tags:
+        - Notifications
+      summary: Delete a subNotification
+      description: Deletes a subNotification from a notification.
+      responses:
+        '200':
+          description: subNotification deleted.
+  /users/{userId}/notifications/INAPP_WEB:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: getInAppNotifications
+      tags:
+        - In-App Inbox
+      summary: Get a user's in-app notifications
+      description: >-
+        Returns the in-app (INAPP_WEB) notification inbox for a user, ordered
+        newest first, for rendering the in-app inbox component. Supports
+        pagination with `before` and `count`. Authenticated with the per-user
+        HMAC Authorization header.
+      parameters:
+        - in: query
+          name: count
+          required: false
+          schema:
+            type: integer
+            default: 50
+          description: Maximum number of notifications to return.
+        - in: query
+          name: before
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: >-
+            Return notifications older than this ISO 8601 timestamp, for
+            pagination.
+      responses:
+        '200':
+          description: The user's in-app notifications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InAppNotificationsResponse'
+    patch:
+      operationId: updateInAppNotifications
+      tags:
+        - In-App Inbox
+      summary: Update in-app notifications
+      description: >-
+        Marks one or more in-app notifications (by trackingId) as opened,
+        clicked, archived, or actioned, or attaches a reply. Authenticated with
+        the per-user HMAC Authorization header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InAppNotificationPatchRequest'
+            example:
+              trackingIds:
+                - 3f9c1b2a-7d4e-4a0b-9f21-8c6e2d1a0b34
+              opened: '2026-07-01T12:00:00.000Z'
+      responses:
+        '200':
+          description: In-app notifications updated.
+  /logs/query:
+    post:
+      operationId: queryLogs
+      tags:
+        - Logs
+      summary: Query logs
+      description: >-
+        Queries delivery and event logs with optional filters by date range,
+        notification, channel, user, status, and trackingId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryLogsRequest'
+            example:
+              dateRangeFilter:
+                startTime: 1719792000
+                endTime: 1719878400
+              channelFilter:
+                - EMAIL
+                - SMS
+              statusFilter:
+                - sent
+      responses:
+        '200':
+          description: Matching log entries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryLogsResponse'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: >-
+        HTTP Basic authentication. For account-level calls the username is your
+        clientId and the password is your clientSecret. Per-user calls (identify
+        user, in-app inbox, delete preferences) use `base64(clientId:userId:hmac)`
+        where hmac is HMAC-SHA256(userId) keyed with the clientSecret.
+  parameters:
+    UserId:
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+      description: The ID of the user in your system.
+    NotificationId:
+      in: path
+      name: notificationId
+      required: true
+      schema:
+        type: string
+      description: The ID of the notification in NotificationAPI.
+    SubNotificationId:
+      in: path
+      name: subNotificationId
+      required: true
+      schema:
+        type: string
+      description: The subNotification (subcategory) identifier.
+    TrackingId:
+      in: path
+      name: trackingId
+      required: true
+      schema:
+        type: string
+      description: The trackingId of a scheduled notification.
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        error:
+          type: string
+    User:
+      type: object
+      description: A user you notify.
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: The ID of the user in your system.
+        email:
+          type: string
+          description: Required for email notifications, otherwise optional.
+        number:
+          type: string
+          description: >-
+            E.164 phone number for SMS/CALL, e.g. +15005550006. Common US/Canada
+            formats are also accepted.
+        timezone:
+          type: string
+          description: The user's IANA timezone, e.g. America/New_York.
+        slackChannel:
+          type: string
+          description: Destination Slack channel, channel ID, or user ID for Slack notifications.
+        pushTokens:
+          type: array
+          description: Mobile push tokens (APN/FCM), one per device.
+          items:
+            $ref: '#/components/schemas/PushToken'
+        webPushTokens:
+          type: array
+          description: Web push subscription tokens, one per browser.
+          items:
+            type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UserData:
+      type: object
+      description: The mutable fields of a user, used on identify.
+      properties:
+        email:
+          type: string
+        number:
+          type: string
+        timezone:
+          type: string
+        slackChannel:
+          type: string
+        pushTokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/PushToken'
+        webPushTokens:
+          type: array
+          items:
+            type: object
+    PushToken:
+      type: object
+      required:
+        - type
+        - token
+        - device
+      properties:
+        type:
+          type: string
+          enum:
+            - FCM
+            - APN
+          description: The push provider the token belongs to.
+        token:
+          type: string
+          description: The full push token string.
+        device:
+          type: object
+          properties:
+            device_id:
+              type: string
+            platform:
+              type: string
+            app_id:
+              type: string
+    SendRequest:
+      type: object
+      description: >-
+        A request to send (or schedule) a notification. `type` names the
+        notification configured in your dashboard; `to` is the recipient;
+        `parameters` are merged into the templates.
+      properties:
+        type:
+          type: string
+          description: The notification type to send (formerly notificationId).
+        to:
+          $ref: '#/components/schemas/User'
+        parameters:
+          type: object
+          additionalProperties: true
+          description: Values merged into the notification templates (formerly mergeTags).
+        forceChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+          description: Override the channels used for this notification.
+        templateId:
+          type: string
+          description: Force a specific template instead of the channel default.
+        subNotificationId:
+          type: string
+          description: Target a subcategory within the notification.
+        schedule:
+          type: string
+          format: date-time
+          description: ISO 8601 datetime to schedule delivery, e.g. 2026-08-01T14:38:03.509Z.
+        email:
+          type: object
+          description: Inline email content overrides.
+          properties:
+            subject:
+              type: string
+            html:
+              type: string
+            previewText:
+              type: string
+            senderName:
+              type: string
+            senderEmail:
+              type: string
+        sms:
+          type: object
+          properties:
+            message:
+              type: string
+        call:
+          type: object
+          properties:
+            message:
+              type: string
+        inapp:
+          type: object
+          properties:
+            title:
+              type: string
+            url:
+              type: string
+            image:
+              type: string
+        web_push:
+          type: object
+          properties:
+            title:
+              type: string
+            message:
+              type: string
+            icon:
+              type: string
+            url:
+              type: string
+        mobile_push:
+          type: object
+          properties:
+            title:
+              type: string
+            message:
+              type: string
+        options:
+          type: object
+          description: >-
+            Per-channel delivery options such as email reply-to, cc/bcc,
+            fromName/fromAddress, attachments, and push priority.
+    SendResponse:
+      type: object
+      properties:
+        trackingId:
+          type: string
+          description: Identifier for this send, usable to retract, schedule, or query logs.
+    RetractRequest:
+      type: object
+      required:
+        - notificationId
+        - userId
+      properties:
+        notificationId:
+          type: string
+          description: The notification to retract.
+        userId:
+          type: string
+          description: The user the notification was sent to.
+        subNotificationId:
+          type: string
+          description: Optional subcategory scope.
+    UserPreference:
+      type: object
+      required:
+        - notificationId
+      properties:
+        notificationId:
+          type: string
+          description: The notification the preference applies to.
+        channel:
+          $ref: '#/components/schemas/Channel'
+        delivery:
+          type: string
+          enum:
+            - 'off'
+            - instant
+            - hourly
+            - daily
+            - weekly
+            - monthly
+          description: Delivery cadence, or off to opt out of the channel.
+        subNotificationId:
+          type: string
+          description: Optional subcategory scope.
+    Channel:
+      type: string
+      enum:
+        - EMAIL
+        - INAPP_WEB
+        - SMS
+        - CALL
+        - PUSH
+        - WEB_PUSH
+    InAppNotificationPatchRequest:
+      type: object
+      required:
+        - trackingIds
+      properties:
+        trackingIds:
+          type: array
+          items:
+            type: string
+          description: The trackingIds of the in-app notifications to update.
+        opened:
+          type: string
+          format: date-time
+        clicked:
+          type: string
+          format: date-time
+        archived:
+          type: string
+          format: date-time
+        actioned1:
+          type: string
+          format: date-time
+        actioned2:
+          type: string
+          format: date-time
+        reply:
+          type: object
+          properties:
+            date:
+              type: string
+              format: date-time
+            message:
+              type: string
+    InAppNotificationsResponse:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/InAppNotification'
+        oldestReceived:
+          type: string
+          format: date-time
+          description: Timestamp of the oldest returned notification, for pagination.
+    InAppNotification:
+      type: object
+      properties:
+        trackingId:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        image:
+          type: string
+        date:
+          type: string
+          format: date-time
+        opened:
+          type: string
+          format: date-time
+        clicked:
+          type: string
+          format: date-time
+        archived:
+          type: string
+          format: date-time
+    QueryLogsRequest:
+      type: object
+      properties:
+        dateRangeFilter:
+          type: object
+          properties:
+            startTime:
+              type: integer
+              description: Unix timestamp start of the range.
+            endTime:
+              type: integer
+              description: Unix timestamp end of the range.
+        notificationFilter:
+          type: array
+          items:
+            type: string
+        channelFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+        userFilter:
+          type: array
+          items:
+            type: string
+        statusFilter:
+          type: array
+          items:
+            type: string
+        trackingIds:
+          type: array
+          items:
+            type: string
+    QueryLogsResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            type: object
+            properties:
+              trackingId:
+                type: string
+              notificationId:
+                type: string
+              userId:
+                type: string
+              channel:
+                $ref: '#/components/schemas/Channel'
+              status:
+                type: string
+              date:
+                type: string
+                format: date-time
