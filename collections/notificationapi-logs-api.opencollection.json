@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "NotificationAPI REST In-App Inbox Logs API",
+    "version": "2.8"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Logs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.notificationapi.com/{clientId}/logs/query",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queries delivery and event logs with optional filters by date range, notification, channel, user, status, and trackingId."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

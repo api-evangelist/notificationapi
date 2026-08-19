@@ -1,0 +1,441 @@
+{
+  "item": [
+    {
+      "id": "e08f63a7-3f85-4e93-a3f2-72c18c8670c8",
+      "name": "Send",
+      "description": {
+        "content": "Send and retract notifications across channels.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "921bcf28-48f8-48c9-bcb7-673b36f69a67",
+          "name": "Send a notification",
+          "request": {
+            "name": "Send a notification",
+            "description": {
+              "content": "Sends a notification to the specified user across the channels configured for the notification type. Supply an ISO 8601 `schedule` value to schedule the notification for future delivery instead of sending immediately.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sender"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your NotificationAPI account clientId.",
+                  "type": "any",
+                  "value": "{{clientId}}",
+                  "key": "clientId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"to\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"number\": \"<string>\",\n    \"timezone\": \"<string>\",\n    \"slackChannel\": \"<string>\",\n    \"pushTokens\": [\n      {\n        \"type\": \"<string>\",\n        \"token\": \"<string>\",\n        \"device\": {\n          \"device_id\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"app_id\": \"<string>\"\n        }\n      },\n      {\n        \"type\": \"<string>\",\n        \"token\": \"<string>\",\n        \"device\": {\n          \"device_id\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"app_id\": \"<string>\"\n        }\n      }\n    ],\n    \"webPushTokens\": [\n      \"<object>\",\n      \"<object>\"\n    ],\n    \"createdAt\": \"<dateTime>\",\n    \"updatedAt\": \"<dateTime>\"\n  },\n  \"parameters\": {\n    \"key_0\": \"string\",\n    \"key_1\": 4763,\n    \"key_2\": false\n  },\n  \"forceChannels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"templateId\": \"<string>\",\n  \"subNotificationId\": \"<string>\",\n  \"schedule\": \"<dateTime>\",\n  \"email\": {\n    \"subject\": \"<string>\",\n    \"html\": \"<string>\",\n    \"previewText\": \"<string>\",\n    \"senderName\": \"<string>\",\n    \"senderEmail\": \"<string>\"\n  },\n  \"sms\": {\n    \"message\": \"<string>\"\n  },\n  \"call\": {\n    \"message\": \"<string>\"\n  },\n  \"inapp\": {\n    \"title\": \"<string>\",\n    \"url\": \"<string>\",\n    \"image\": \"<string>\"\n  },\n  \"web_push\": {\n    \"title\": \"<string>\",\n    \"message\": \"<string>\",\n    \"icon\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"mobile_push\": {\n    \"title\": \"<string>\",\n    \"message\": \"<string>\"\n  },\n  \"options\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "49930ae0-0060-4402-815e-404899b4c38f",
+              "name": "Notification accepted for delivery.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sender"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"order_shipped\",\n  \"to\": {\n    \"id\": \"user_123\",\n    \"email\": \"jane@example.com\",\n    \"number\": \"+15005550006\"\n  },\n  \"parameters\": {\n    \"orderNumber\": \"1043\",\n    \"trackingUrl\": \"https://example.com/track/1043\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"trackingId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "03c27bf7-22c8-4008-beda-93c5299196be",
+              "name": "Accepted with a warning (e.g., missing channel identifier).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sender"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"order_shipped\",\n  \"to\": {\n    \"id\": \"user_123\",\n    \"email\": \"jane@example.com\",\n    \"number\": \"+15005550006\"\n  },\n  \"parameters\": {\n    \"orderNumber\": \"1043\",\n    \"trackingUrl\": \"https://example.com/track/1043\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1757fd7e-2cb2-4283-b30c-b5881dfd4478",
+              "name": "Missing or invalid credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sender"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"order_shipped\",\n  \"to\": {\n    \"id\": \"user_123\",\n    \"email\": \"jane@example.com\",\n    \"number\": \"+15005550006\"\n  },\n  \"parameters\": {\n    \"orderNumber\": \"1043\",\n    \"trackingUrl\": \"https://example.com/track/1043\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8881ba49-4c0f-4649-9e88-3fc974dd806d",
+          "name": "Retract a notification",
+          "request": {
+            "name": "Retract a notification",
+            "description": {
+              "content": "Un-sends or deletes previously sent notifications for a user - for example an in-app notification that is no longer valid.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sender",
+                "retract"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your NotificationAPI account clientId.",
+                  "type": "any",
+                  "value": "{{clientId}}",
+                  "key": "clientId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notificationId\": \"<string>\",\n  \"userId\": \"<string>\",\n  \"subNotificationId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b218e13a-5b60-448a-90b6-f004085bc585",
+              "name": "Notification retracted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sender",
+                    "retract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notificationId\": \"order_shipped\",\n  \"userId\": \"user_123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ac86c7fe-f442-4899-b923-c33accfa0aff",
+              "name": "Missing or invalid credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sender",
+                    "retract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notificationId\": \"order_shipped\",\n  \"userId\": \"user_123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your NotificationAPI account clientId.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your_client_id",
+      "key": "clientId"
+    },
+    {
+      "type": "string",
+      "value": "https://api.notificationapi.com/{{clientId}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3b19a1b9-435a-442b-a2f1-99e10010ce83",
+    "name": "NotificationAPI REST In-App Inbox Send API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.\n\nContact Support:\n Name: NotificationAPI Support\n Email: support@notificationapi.com",
+      "type": "text/plain"
+    }
+  }
+}

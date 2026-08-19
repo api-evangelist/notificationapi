@@ -1,0 +1,313 @@
+{
+  "item": [
+    {
+      "id": "ba416d87-2786-4aa9-af59-78b4fecdea05",
+      "name": "In-App Inbox",
+      "description": {
+        "content": "Read and update a user's in-app (INAPP_WEB) notifications.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6c91338a-8373-4664-8122-0e069dcdebaf",
+          "name": "Get a user's in-app notifications",
+          "request": {
+            "name": "Get a user's in-app notifications",
+            "description": {
+              "content": "Returns the in-app (INAPP_WEB) notification inbox for a user, ordered newest first, for rendering the in-app inbox component. Supports pagination with `before` and `count`. Authenticated with the per-user HMAC Authorization header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":userId",
+                "notifications",
+                "INAPP_WEB"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "50",
+                  "description": "Maximum number of notifications to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": "<dateTime>",
+                  "description": "Return notifications older than this ISO 8601 timestamp, for pagination."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) The ID of the user in your system."
+                },
+                {
+                  "description": "Your NotificationAPI account clientId.",
+                  "type": "any",
+                  "value": "{{clientId}}",
+                  "key": "clientId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "240b7698-6397-4daf-9264-fcd058d8dceb",
+              "name": "The user's in-app notifications.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":userId",
+                    "notifications",
+                    "INAPP_WEB"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "50"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The ID of the user in your system."
+                    },
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"notifications\": [\n    {\n      \"trackingId\": \"string\",\n      \"title\": \"string\",\n      \"url\": \"string\",\n      \"image\": \"string\",\n      \"date\": \"2022-09-30T21:19:37.733Z\",\n      \"opened\": \"1967-01-29T21:10:59.934Z\",\n      \"clicked\": \"1983-06-23T10:35:16.775Z\",\n      \"archived\": \"1959-10-08T15:50:03.698Z\"\n    },\n    {\n      \"trackingId\": \"string\",\n      \"title\": \"string\",\n      \"url\": \"string\",\n      \"image\": \"string\",\n      \"date\": \"1966-09-10T05:56:57.295Z\",\n      \"opened\": \"2013-04-14T02:22:54.958Z\",\n      \"clicked\": \"2001-10-27T22:25:00.058Z\",\n      \"archived\": \"2014-01-20T11:16:26.512Z\"\n    }\n  ],\n  \"oldestReceived\": \"1968-01-02T12:54:57.342Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d39943b9-835f-4fa4-8112-b5a7047172a7",
+          "name": "Update in-app notifications",
+          "request": {
+            "name": "Update in-app notifications",
+            "description": {
+              "content": "Marks one or more in-app notifications (by trackingId) as opened, clicked, archived, or actioned, or attaches a reply. Authenticated with the per-user HMAC Authorization header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":userId",
+                "notifications",
+                "INAPP_WEB"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) The ID of the user in your system."
+                },
+                {
+                  "description": "Your NotificationAPI account clientId.",
+                  "type": "any",
+                  "value": "{{clientId}}",
+                  "key": "clientId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trackingIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"opened\": \"<dateTime>\",\n  \"clicked\": \"<dateTime>\",\n  \"archived\": \"<dateTime>\",\n  \"actioned1\": \"<dateTime>\",\n  \"actioned2\": \"<dateTime>\",\n  \"reply\": {\n    \"date\": \"<dateTime>\",\n    \"message\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7d82d456-7926-4ed1-b014-0666982252e5",
+              "name": "In-app notifications updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":userId",
+                    "notifications",
+                    "INAPP_WEB"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The ID of the user in your system."
+                    },
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"trackingIds\": [\n    \"3f9c1b2a-7d4e-4a0b-9f21-8c6e2d1a0b34\"\n  ],\n  \"opened\": \"2026-07-01T12:00:00.000Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your NotificationAPI account clientId.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your_client_id",
+      "key": "clientId"
+    },
+    {
+      "type": "string",
+      "value": "https://api.notificationapi.com/{{clientId}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b3f4a15d-ca90-4031-9632-1916e4d03ca1",
+    "name": "NotificationAPI REST In-App Inbox API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.\n\nContact Support:\n Name: NotificationAPI Support\n Email: support@notificationapi.com",
+      "type": "text/plain"
+    }
+  }
+}

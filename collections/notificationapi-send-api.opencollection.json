@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "NotificationAPI REST In-App Inbox Send API",
+    "version": "2.8"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Send",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send a notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.notificationapi.com/{clientId}/sender",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a notification to the specified user across the channels configured for the notification type. Supply an ISO 8601 `schedule` value to schedule the notification for future delivery instead of sending immediately."
+        },
+        {
+          "info": {
+            "name": "Retract a notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.notificationapi.com/{clientId}/sender/retract",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Un-sends or deletes previously sent notifications for a user - for example an in-app notification that is no longer valid."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

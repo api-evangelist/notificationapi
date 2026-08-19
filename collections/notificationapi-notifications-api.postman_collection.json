@@ -1,0 +1,309 @@
+{
+  "item": [
+    {
+      "id": "2b4e3a8d-9832-4676-8a1d-70d70b9e4f13",
+      "name": "Notifications",
+      "description": {
+        "content": "Configure notifications and their subNotifications.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fcd76ee3-6f00-488c-bac3-f6c0863f2e52",
+          "name": "Create a subNotification",
+          "request": {
+            "name": "Create a subNotification",
+            "description": {
+              "content": "Creates a subNotification (a subcategory within a notification), for example a per-project or per-topic channel a user can subscribe to independently.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications",
+                ":notificationId",
+                "subNotifications",
+                ":subNotificationId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "notificationId",
+                  "description": "(Required) The ID of the notification in NotificationAPI."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subNotificationId",
+                  "description": "(Required) The subNotification (subcategory) identifier."
+                },
+                {
+                  "description": "Your NotificationAPI account clientId.",
+                  "type": "any",
+                  "value": "{{clientId}}",
+                  "key": "clientId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1cebba92-6f48-4b28-9962-7d54e9e8d975",
+              "name": "subNotification created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notificationId",
+                    "subNotifications",
+                    ":subNotificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) The ID of the notification in NotificationAPI."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subNotificationId",
+                      "description": "(Required) The subNotification (subcategory) identifier."
+                    },
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Project Apollo updates\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ae18ad72-bb9d-4748-abec-85de438b430a",
+          "name": "Delete a subNotification",
+          "request": {
+            "name": "Delete a subNotification",
+            "description": {
+              "content": "Deletes a subNotification from a notification.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications",
+                ":notificationId",
+                "subNotifications",
+                ":subNotificationId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "notificationId",
+                  "description": "(Required) The ID of the notification in NotificationAPI."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subNotificationId",
+                  "description": "(Required) The subNotification (subcategory) identifier."
+                },
+                {
+                  "description": "Your NotificationAPI account clientId.",
+                  "type": "any",
+                  "value": "{{clientId}}",
+                  "key": "clientId"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5d54ee09-6ee6-4e57-8816-4d315e84db32",
+              "name": "subNotification deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications",
+                    ":notificationId",
+                    "subNotifications",
+                    ":subNotificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) The ID of the notification in NotificationAPI."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subNotificationId",
+                      "description": "(Required) The subNotification (subcategory) identifier."
+                    },
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your NotificationAPI account clientId.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your_client_id",
+      "key": "clientId"
+    },
+    {
+      "type": "string",
+      "value": "https://api.notificationapi.com/{{clientId}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "55b02ec0-ed1c-42eb-b5d1-bce6189e2685",
+    "name": "NotificationAPI REST In-App Inbox Notifications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.\n\nContact Support:\n Name: NotificationAPI Support\n Email: support@notificationapi.com",
+      "type": "text/plain"
+    }
+  }
+}

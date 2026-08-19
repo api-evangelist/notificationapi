@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "NotificationAPI REST In-App Inbox Users API",
+    "version": "2.8"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Identify a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.notificationapi.com/{clientId}/users/:userId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user in your system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a user record with contact identifiers (email, number, push/web-push tokens, timezone, Slack channel). This request is authenticated with a per-user HMAC signature in the Authorization header (`Basic base64(clientId:userId:hmac)`) so it may also be called from trusted server contexts on behalf of a user."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

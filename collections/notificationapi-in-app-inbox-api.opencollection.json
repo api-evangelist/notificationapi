@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "NotificationAPI REST In-App Inbox API",
+    "version": "2.8"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "In-App Inbox",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a user's in-app notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.notificationapi.com/{clientId}/users/:userId/notifications/INAPP_WEB",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user in your system."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of notifications to return."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Return notifications older than this ISO 8601 timestamp, for pagination."
+              }
+            ]
+          },
+          "docs": "Returns the in-app (INAPP_WEB) notification inbox for a user, ordered newest first, for rendering the in-app inbox component. Supports pagination with `before` and `count`. Authenticated with the per-user HMAC Authorization header."
+        },
+        {
+          "info": {
+            "name": "Update in-app notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.notificationapi.com/{clientId}/users/:userId/notifications/INAPP_WEB",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user in your system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Marks one or more in-app notifications (by trackingId) as opened, clicked, archived, or actioned, or attaches a reply. Authenticated with the per-user HMAC Authorization header."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

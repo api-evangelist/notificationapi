@@ -1,0 +1,297 @@
+{
+  "item": [
+    {
+      "id": "00392f2c-8906-4e0b-862c-384d95ef0789",
+      "name": "User Preferences",
+      "description": {
+        "content": "Read and write per-user channel and opt-out preferences.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a7e26eb9-5c0f-4d23-965e-9b38ae6137a1",
+          "name": "Delete stored preferences for a user",
+          "request": {
+            "name": "Delete stored preferences for a user",
+            "description": {
+              "content": "Deletes any stored preferences for a user and a given notificationId (optionally scoped to a subNotificationId).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":userId",
+                "preferences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "notificationId",
+                  "value": "<string>",
+                  "description": "(Required) The notification whose stored preferences should be deleted."
+                },
+                {
+                  "disabled": false,
+                  "key": "subNotificationId",
+                  "value": "<string>",
+                  "description": "Optional subNotification scope."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) The ID of the user in your system."
+                },
+                {
+                  "description": "Your NotificationAPI account clientId.",
+                  "type": "any",
+                  "value": "{{clientId}}",
+                  "key": "clientId"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "aa2f10a3-0143-470b-88e0-087edf028aa5",
+              "name": "Preferences deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":userId",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "notificationId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subNotificationId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The ID of the user in your system."
+                    },
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "58000511-f4e5-431b-ac00-6c39e7f34470",
+          "name": "Set user preferences",
+          "request": {
+            "name": "Set user preferences",
+            "description": {
+              "content": "Sets per-notification, per-channel delivery preferences and opt-outs for a user. The body is an array of preference objects.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user_preferences",
+                ":userId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) The ID of the user in your system."
+                },
+                {
+                  "description": "Your NotificationAPI account clientId.",
+                  "type": "any",
+                  "value": "{{clientId}}",
+                  "key": "clientId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"notificationId\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"delivery\": \"<string>\",\n    \"subNotificationId\": \"<string>\"\n  },\n  {\n    \"notificationId\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"delivery\": \"<string>\",\n    \"subNotificationId\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a3106e07-d89e-4809-8f2b-bb1fb60af2d3",
+              "name": "Preferences saved.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user_preferences",
+                    ":userId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The ID of the user in your system."
+                    },
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"notificationId\": \"order_shipped\",\n    \"channel\": \"EMAIL\",\n    \"delivery\": \"off\"\n  },\n  {\n    \"notificationId\": \"weekly_digest\",\n    \"channel\": \"EMAIL\",\n    \"delivery\": \"weekly\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your NotificationAPI account clientId.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your_client_id",
+      "key": "clientId"
+    },
+    {
+      "type": "string",
+      "value": "https://api.notificationapi.com/{{clientId}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "bddd9a55-e805-4bdd-911b-c7877833f564",
+    "name": "NotificationAPI REST In-App Inbox User Preferences API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.\n\nContact Support:\n Name: NotificationAPI Support\n Email: support@notificationapi.com",
+      "type": "text/plain"
+    }
+  }
+}

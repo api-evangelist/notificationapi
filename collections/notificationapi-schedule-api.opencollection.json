@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "NotificationAPI REST In-App Inbox Schedule API",
+    "version": "2.8"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Schedule",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update a scheduled notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.notificationapi.com/{clientId}/schedule/:trackingId",
+            "params": [
+              {
+                "name": "trackingId",
+                "value": "",
+                "type": "path",
+                "description": "The trackingId of a scheduled notification."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a previously scheduled notification by its trackingId."
+        },
+        {
+          "info": {
+            "name": "Delete a scheduled notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.notificationapi.com/{clientId}/schedule/:trackingId",
+            "params": [
+              {
+                "name": "trackingId",
+                "value": "",
+                "type": "path",
+                "description": "The trackingId of a scheduled notification."
+              }
+            ]
+          },
+          "docs": "Cancels a previously scheduled notification by its trackingId."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,245 @@
+{
+  "item": [
+    {
+      "id": "8c595776-932c-4e7c-b947-0737f17d7633",
+      "name": "Users",
+      "description": {
+        "content": "Identify and manage the users you notify.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "89363ec4-44c3-41f4-be66-39d1a70c757b",
+          "name": "Identify a user",
+          "request": {
+            "name": "Identify a user",
+            "description": {
+              "content": "Creates or updates a user record with contact identifiers (email, number, push/web-push tokens, timezone, Slack channel). This request is authenticated with a per-user HMAC signature in the Authorization header (`Basic base64(clientId:userId:hmac)`) so it may also be called from trusted server contexts on behalf of a user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":userId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) The ID of the user in your system."
+                },
+                {
+                  "description": "Your NotificationAPI account clientId.",
+                  "type": "any",
+                  "value": "{{clientId}}",
+                  "key": "clientId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<string>\",\n  \"number\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"slackChannel\": \"<string>\",\n  \"pushTokens\": [\n    {\n      \"type\": \"<string>\",\n      \"token\": \"<string>\",\n      \"device\": {\n        \"device_id\": \"<string>\",\n        \"platform\": \"<string>\",\n        \"app_id\": \"<string>\"\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"token\": \"<string>\",\n      \"device\": {\n        \"device_id\": \"<string>\",\n        \"platform\": \"<string>\",\n        \"app_id\": \"<string>\"\n      }\n    }\n  ],\n  \"webPushTokens\": [\n    \"<object>\",\n    \"<object>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d1c8afd9-7513-4115-85c2-a33101abe41a",
+              "name": "User identified (created or updated).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":userId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The ID of the user in your system."
+                    },
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"jane@example.com\",\n  \"number\": \"+15005550006\",\n  \"timezone\": \"America/New_York\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"email\": \"string\",\n  \"number\": \"string\",\n  \"timezone\": \"string\",\n  \"slackChannel\": \"string\",\n  \"pushTokens\": [\n    {\n      \"type\": \"<string>\",\n      \"token\": \"<string>\",\n      \"device\": {\n        \"device_id\": \"<string>\",\n        \"platform\": \"<string>\",\n        \"app_id\": \"<string>\"\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"token\": \"<string>\",\n      \"device\": {\n        \"device_id\": \"<string>\",\n        \"platform\": \"<string>\",\n        \"app_id\": \"<string>\"\n      }\n    }\n  ],\n  \"createdAt\": \"2012-02-03T06:09:01.674Z\",\n  \"updatedAt\": \"1962-11-07T16:13:52.115Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0cc8190c-b316-4c7c-a84f-bce4b438645a",
+              "name": "Missing or invalid credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":userId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The ID of the user in your system."
+                    },
+                    {
+                      "description": "Your NotificationAPI account clientId.",
+                      "type": "any",
+                      "value": "{{clientId}}",
+                      "key": "clientId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"jane@example.com\",\n  \"number\": \"+15005550006\",\n  \"timezone\": \"America/New_York\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your NotificationAPI account clientId.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your_client_id",
+      "key": "clientId"
+    },
+    {
+      "type": "string",
+      "value": "https://api.notificationapi.com/{{clientId}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ae595b47-290a-4c31-ba96-fa8aad721987",
+    "name": "NotificationAPI REST In-App Inbox Users API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.\n\nContact Support:\n Name: NotificationAPI Support\n Email: support@notificationapi.com",
+      "type": "text/plain"
+    }
+  }
+}
