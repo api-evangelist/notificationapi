@@ -31,7 +31,7 @@ tags:
 - In-App Inbox
 created: '2026-07-01'
 modified: '2026-07-01'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: notificationapi:notificationapi-in-app-inbox-api
   name: NotificationAPI In-App Inbox API
