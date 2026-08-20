@@ -23,6 +23,13 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/notificationapi.png
 tags:
+- Notification
+- Messaging
+- Email
+- SMS
+- Push
+- In-App Inbox
+tags_raw:
 - Notifications
 - Messaging
 - Email
@@ -91,6 +98,8 @@ apis:
   humanURL: https://docs.notificationapi.com/reference/send
   baseURL: https://api.notificationapi.com/{clientId}
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
@@ -195,6 +204,8 @@ apis:
   humanURL: https://docs.notificationapi.com/reference/send
   baseURL: https://api.notificationapi.com/{clientId}
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
