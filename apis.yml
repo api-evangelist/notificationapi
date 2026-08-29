@@ -8,6 +8,18 @@ description: NotificationAPI is notifications infrastructure for developers. A s
   managing user identities, per-user preferences and opt-outs, templates, scheduling,
   and delivery logs. All calls are scoped to a clientId and authenticated with HTTP
   Basic auth.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
