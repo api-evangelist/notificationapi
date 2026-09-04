@@ -31,6 +31,7 @@ accessModel:
   source:
   - plans
   - authentication
+  - {url: 'https://www.notificationapi.com/', status: 301, note: 'declared website redirects to https://www.pingram.io/ — a different registrable domain (notificationapi.com -> pingram.io), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
   generated: '2026-07-22'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/notificationapi.png
