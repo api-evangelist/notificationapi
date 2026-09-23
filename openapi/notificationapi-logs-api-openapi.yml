@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: NotificationAPI REST In-App Inbox Logs API
+  title: NotificationAPI REST Logs API
   description: NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.
   termsOfService: https://www.notificationapi.com/terms
   contact:
@@ -64,6 +64,15 @@ paths:
                 $ref: '#/components/schemas/QueryLogsResponse'
 components:
   schemas:
+    Channel:
+      type: string
+      enum:
+      - EMAIL
+      - INAPP_WEB
+      - SMS
+      - CALL
+      - PUSH
+      - WEB_PUSH
     QueryLogsResponse:
       type: object
       properties:
@@ -85,15 +94,6 @@ components:
               date:
                 type: string
                 format: date-time
-    Channel:
-      type: string
-      enum:
-      - EMAIL
-      - INAPP_WEB
-      - SMS
-      - CALL
-      - PUSH
-      - WEB_PUSH
     QueryLogsRequest:
       type: object
       properties:

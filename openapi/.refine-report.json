@@ -1,13 +1,7 @@
 {
   "provider": "notificationapi",
   "sources": [
-    "notificationapi-in-app-inbox-api-openapi.yml",
-    "notificationapi-logs-api-openapi.yml",
-    "notificationapi-notifications-api-openapi.yml",
-    "notificationapi-schedule-api-openapi.yml",
-    "notificationapi-send-api-openapi.yml",
-    "notificationapi-user-preferences-api-openapi.yml",
-    "notificationapi-users-api-openapi.yml"
+    "_original/notificationapi-openapi.yml"
   ],
   "outputs": [
     "notificationapi-in-app-inbox-api-openapi.yml",
@@ -21,6 +15,18 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "notificationapi-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "notificationapi-in-app-inbox-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "notificationapi-logs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "notificationapi-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "notificationapi-schedule-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "notificationapi-send-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "notificationapi-user-preferences-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "notificationapi-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: NotificationAPI REST In-App Inbox API
   description: NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.
@@ -84,15 +84,40 @@ paths:
         '200':
           description: In-app notifications updated.
 components:
-  parameters:
-    UserId:
-      in: path
-      name: userId
-      required: true
-      schema:
-        type: string
-      description: The ID of the user in your system.
   schemas:
+    InAppNotificationPatchRequest:
+      type: object
+      required:
+      - trackingIds
+      properties:
+        trackingIds:
+          type: array
+          items:
+            type: string
+          description: The trackingIds of the in-app notifications to update.
+        opened:
+          type: string
+          format: date-time
+        clicked:
+          type: string
+          format: date-time
+        archived:
+          type: string
+          format: date-time
+        actioned1:
+          type: string
+          format: date-time
+        actioned2:
+          type: string
+          format: date-time
+        reply:
+          type: object
+          properties:
+            date:
+              type: string
+              format: date-time
+            message:
+              type: string
     InAppNotificationsResponse:
       type: object
       properties:
@@ -127,39 +152,14 @@ components:
         archived:
           type: string
           format: date-time
-    InAppNotificationPatchRequest:
-      type: object
-      required:
-      - trackingIds
-      properties:
-        trackingIds:
-          type: array
-          items:
-            type: string
-          description: The trackingIds of the in-app notifications to update.
-        opened:
-          type: string
-          format: date-time
-        clicked:
-          type: string
-          format: date-time
-        archived:
-          type: string
-          format: date-time
-        actioned1:
-          type: string
-          format: date-time
-        actioned2:
-          type: string
-          format: date-time
-        reply:
-          type: object
-          properties:
-            date:
-              type: string
-              format: date-time
-            message:
-              type: string
+  parameters:
+    UserId:
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+      description: The ID of the user in your system.
   securitySchemes:
     basicAuth:
       type: http

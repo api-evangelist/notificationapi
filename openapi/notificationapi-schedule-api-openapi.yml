@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: NotificationAPI REST In-App Inbox Schedule API
+  title: NotificationAPI REST Schedule API
   description: NotificationAPI is notifications infrastructure for developers. A single REST API sends multi-channel notifications - email, SMS, mobile push, web push, in-app inbox, automated voice call, and Slack - manages user identities, enforces per-user notification preferences and opt-outs, schedules and retracts notifications, and exposes delivery logs. All endpoints are scoped to your account via the clientId path segment and authenticated with HTTP Basic auth using clientId:clientSecret.
   termsOfService: https://www.notificationapi.com/terms
   contact:
@@ -68,6 +68,77 @@ paths:
           description: No scheduled notification found for the trackingId.
 components:
   schemas:
+    Channel:
+      type: string
+      enum:
+      - EMAIL
+      - INAPP_WEB
+      - SMS
+      - CALL
+      - PUSH
+      - WEB_PUSH
+    User:
+      type: object
+      description: A user you notify.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The ID of the user in your system.
+        email:
+          type: string
+          description: Required for email notifications, otherwise optional.
+        number:
+          type: string
+          description: E.164 phone number for SMS/CALL, e.g. +15005550006. Common US/Canada formats are also accepted.
+        timezone:
+          type: string
+          description: The user's IANA timezone, e.g. America/New_York.
+        slackChannel:
+          type: string
+          description: Destination Slack channel, channel ID, or user ID for Slack notifications.
+        pushTokens:
+          type: array
+          description: Mobile push tokens (APN/FCM), one per device.
+          items:
+            $ref: '#/components/schemas/PushToken'
+        webPushTokens:
+          type: array
+          description: Web push subscription tokens, one per browser.
+          items:
+            type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PushToken:
+      type: object
+      required:
+      - type
+      - token
+      - device
+      properties:
+        type:
+          type: string
+          enum:
+          - FCM
+          - APN
+          description: The push provider the token belongs to.
+        token:
+          type: string
+          description: The full push token string.
+        device:
+          type: object
+          properties:
+            device_id:
+              type: string
+            platform:
+              type: string
+            app_id:
+              type: string
     SendRequest:
       type: object
       description: A request to send (or schedule) a notification. `type` names the notification configured in your dashboard; `to` is the recipient; `parameters` are merged into the templates.
@@ -150,77 +221,6 @@ components:
         options:
           type: object
           description: Per-channel delivery options such as email reply-to, cc/bcc, fromName/fromAddress, attachments, and push priority.
-    PushToken:
-      type: object
-      required:
-      - type
-      - token
-      - device
-      properties:
-        type:
-          type: string
-          enum:
-          - FCM
-          - APN
-          description: The push provider the token belongs to.
-        token:
-          type: string
-          description: The full push token string.
-        device:
-          type: object
-          properties:
-            device_id:
-              type: string
-            platform:
-              type: string
-            app_id:
-              type: string
-    Channel:
-      type: string
-      enum:
-      - EMAIL
-      - INAPP_WEB
-      - SMS
-      - CALL
-      - PUSH
-      - WEB_PUSH
-    User:
-      type: object
-      description: A user you notify.
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: The ID of the user in your system.
-        email:
-          type: string
-          description: Required for email notifications, otherwise optional.
-        number:
-          type: string
-          description: E.164 phone number for SMS/CALL, e.g. +15005550006. Common US/Canada formats are also accepted.
-        timezone:
-          type: string
-          description: The user's IANA timezone, e.g. America/New_York.
-        slackChannel:
-          type: string
-          description: Destination Slack channel, channel ID, or user ID for Slack notifications.
-        pushTokens:
-          type: array
-          description: Mobile push tokens (APN/FCM), one per device.
-          items:
-            $ref: '#/components/schemas/PushToken'
-        webPushTokens:
-          type: array
-          description: Web push subscription tokens, one per browser.
-          items:
-            type: object
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
   parameters:
     TrackingId:
       in: path
