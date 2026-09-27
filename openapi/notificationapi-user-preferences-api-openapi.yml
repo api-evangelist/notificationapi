@@ -86,6 +86,14 @@ paths:
         '200':
           description: Preferences saved.
 components:
+  parameters:
+    UserId:
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+      description: The ID of the user in your system.
   schemas:
     UserPreference:
       type: object
@@ -119,14 +127,6 @@ components:
       - CALL
       - PUSH
       - WEB_PUSH
-  parameters:
-    UserId:
-      in: path
-      name: userId
-      required: true
-      schema:
-        type: string
-      description: The ID of the user in your system.
   securitySchemes:
     basicAuth:
       type: http

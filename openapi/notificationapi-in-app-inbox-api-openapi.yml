@@ -118,17 +118,6 @@ components:
               format: date-time
             message:
               type: string
-    InAppNotificationsResponse:
-      type: object
-      properties:
-        notifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/InAppNotification'
-        oldestReceived:
-          type: string
-          format: date-time
-          description: Timestamp of the oldest returned notification, for pagination.
     InAppNotification:
       type: object
       properties:
@@ -152,6 +141,17 @@ components:
         archived:
           type: string
           format: date-time
+    InAppNotificationsResponse:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/InAppNotification'
+        oldestReceived:
+          type: string
+          format: date-time
+          description: Timestamp of the oldest returned notification, for pagination.
   parameters:
     UserId:
       in: path

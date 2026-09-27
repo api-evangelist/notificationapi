@@ -64,15 +64,6 @@ paths:
                 $ref: '#/components/schemas/QueryLogsResponse'
 components:
   schemas:
-    Channel:
-      type: string
-      enum:
-      - EMAIL
-      - INAPP_WEB
-      - SMS
-      - CALL
-      - PUSH
-      - WEB_PUSH
     QueryLogsResponse:
       type: object
       properties:
@@ -126,6 +117,15 @@ components:
           type: array
           items:
             type: string
+    Channel:
+      type: string
+      enum:
+      - EMAIL
+      - INAPP_WEB
+      - SMS
+      - CALL
+      - PUSH
+      - WEB_PUSH
   securitySchemes:
     basicAuth:
       type: http

@@ -63,26 +63,6 @@ paths:
           description: Missing or invalid credentials.
 components:
   schemas:
-    UserData:
-      type: object
-      description: The mutable fields of a user, used on identify.
-      properties:
-        email:
-          type: string
-        number:
-          type: string
-        timezone:
-          type: string
-        slackChannel:
-          type: string
-        pushTokens:
-          type: array
-          items:
-            $ref: '#/components/schemas/PushToken'
-        webPushTokens:
-          type: array
-          items:
-            type: object
     User:
       type: object
       description: A user you notify.
@@ -145,6 +125,26 @@ components:
               type: string
             app_id:
               type: string
+    UserData:
+      type: object
+      description: The mutable fields of a user, used on identify.
+      properties:
+        email:
+          type: string
+        number:
+          type: string
+        timezone:
+          type: string
+        slackChannel:
+          type: string
+        pushTokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/PushToken'
+        webPushTokens:
+          type: array
+          items:
+            type: object
   parameters:
     UserId:
       in: path
