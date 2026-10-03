@@ -85,39 +85,6 @@ paths:
           description: In-app notifications updated.
 components:
   schemas:
-    InAppNotificationPatchRequest:
-      type: object
-      required:
-      - trackingIds
-      properties:
-        trackingIds:
-          type: array
-          items:
-            type: string
-          description: The trackingIds of the in-app notifications to update.
-        opened:
-          type: string
-          format: date-time
-        clicked:
-          type: string
-          format: date-time
-        archived:
-          type: string
-          format: date-time
-        actioned1:
-          type: string
-          format: date-time
-        actioned2:
-          type: string
-          format: date-time
-        reply:
-          type: object
-          properties:
-            date:
-              type: string
-              format: date-time
-            message:
-              type: string
     InAppNotification:
       type: object
       properties:
@@ -152,6 +119,39 @@ components:
           type: string
           format: date-time
           description: Timestamp of the oldest returned notification, for pagination.
+    InAppNotificationPatchRequest:
+      type: object
+      required:
+      - trackingIds
+      properties:
+        trackingIds:
+          type: array
+          items:
+            type: string
+          description: The trackingIds of the in-app notifications to update.
+        opened:
+          type: string
+          format: date-time
+        clicked:
+          type: string
+          format: date-time
+        archived:
+          type: string
+          format: date-time
+        actioned1:
+          type: string
+          format: date-time
+        actioned2:
+          type: string
+          format: date-time
+        reply:
+          type: object
+          properties:
+            date:
+              type: string
+              format: date-time
+            message:
+              type: string
   parameters:
     UserId:
       in: path

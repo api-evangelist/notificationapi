@@ -62,44 +62,15 @@ paths:
         '401':
           description: Missing or invalid credentials.
 components:
+  parameters:
+    UserId:
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+      description: The ID of the user in your system.
   schemas:
-    User:
-      type: object
-      description: A user you notify.
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: The ID of the user in your system.
-        email:
-          type: string
-          description: Required for email notifications, otherwise optional.
-        number:
-          type: string
-          description: E.164 phone number for SMS/CALL, e.g. +15005550006. Common US/Canada formats are also accepted.
-        timezone:
-          type: string
-          description: The user's IANA timezone, e.g. America/New_York.
-        slackChannel:
-          type: string
-          description: Destination Slack channel, channel ID, or user ID for Slack notifications.
-        pushTokens:
-          type: array
-          description: Mobile push tokens (APN/FCM), one per device.
-          items:
-            $ref: '#/components/schemas/PushToken'
-        webPushTokens:
-          type: array
-          description: Web push subscription tokens, one per browser.
-          items:
-            type: object
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     PushToken:
       type: object
       required:
@@ -145,14 +116,43 @@ components:
           type: array
           items:
             type: object
-  parameters:
-    UserId:
-      in: path
-      name: userId
-      required: true
-      schema:
-        type: string
-      description: The ID of the user in your system.
+    User:
+      type: object
+      description: A user you notify.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The ID of the user in your system.
+        email:
+          type: string
+          description: Required for email notifications, otherwise optional.
+        number:
+          type: string
+          description: E.164 phone number for SMS/CALL, e.g. +15005550006. Common US/Canada formats are also accepted.
+        timezone:
+          type: string
+          description: The user's IANA timezone, e.g. America/New_York.
+        slackChannel:
+          type: string
+          description: Destination Slack channel, channel ID, or user ID for Slack notifications.
+        pushTokens:
+          type: array
+          description: Mobile push tokens (APN/FCM), one per device.
+          items:
+            $ref: '#/components/schemas/PushToken'
+        webPushTokens:
+          type: array
+          description: Web push subscription tokens, one per browser.
+          items:
+            type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
   securitySchemes:
     basicAuth:
       type: http
