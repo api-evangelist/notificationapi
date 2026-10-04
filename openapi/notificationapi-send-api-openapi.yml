@@ -93,27 +93,6 @@ paths:
           description: Missing or invalid credentials.
 components:
   schemas:
-    SendResponse:
-      type: object
-      properties:
-        trackingId:
-          type: string
-          description: Identifier for this send, usable to retract, schedule, or query logs.
-    RetractRequest:
-      type: object
-      required:
-      - notificationId
-      - userId
-      properties:
-        notificationId:
-          type: string
-          description: The notification to retract.
-        userId:
-          type: string
-          description: The user the notification was sent to.
-        subNotificationId:
-          type: string
-          description: Optional subcategory scope.
     User:
       type: object
       description: A user you notify.
@@ -158,6 +137,52 @@ components:
           type: string
         error:
           type: string
+    SendResponse:
+      type: object
+      properties:
+        trackingId:
+          type: string
+          description: Identifier for this send, usable to retract, schedule, or query logs.
+    PushToken:
+      type: object
+      required:
+      - type
+      - token
+      - device
+      properties:
+        type:
+          type: string
+          enum:
+          - FCM
+          - APN
+          description: The push provider the token belongs to.
+        token:
+          type: string
+          description: The full push token string.
+        device:
+          type: object
+          properties:
+            device_id:
+              type: string
+            platform:
+              type: string
+            app_id:
+              type: string
+    RetractRequest:
+      type: object
+      required:
+      - notificationId
+      - userId
+      properties:
+        notificationId:
+          type: string
+          description: The notification to retract.
+        userId:
+          type: string
+          description: The user the notification was sent to.
+        subNotificationId:
+          type: string
+          description: Optional subcategory scope.
     SendRequest:
       type: object
       description: A request to send (or schedule) a notification. `type` names the notification configured in your dashboard; `to` is the recipient; `parameters` are merged into the templates.
@@ -249,31 +274,6 @@ components:
       - CALL
       - PUSH
       - WEB_PUSH
-    PushToken:
-      type: object
-      required:
-      - type
-      - token
-      - device
-      properties:
-        type:
-          type: string
-          enum:
-          - FCM
-          - APN
-          description: The push provider the token belongs to.
-        token:
-          type: string
-          description: The full push token string.
-        device:
-          type: object
-          properties:
-            device_id:
-              type: string
-            platform:
-              type: string
-            app_id:
-              type: string
   securitySchemes:
     basicAuth:
       type: http

@@ -67,14 +67,6 @@ paths:
         '404':
           description: No scheduled notification found for the trackingId.
 components:
-  parameters:
-    TrackingId:
-      in: path
-      name: trackingId
-      required: true
-      schema:
-        type: string
-      description: The trackingId of a scheduled notification.
   schemas:
     User:
       type: object
@@ -113,6 +105,31 @@ components:
         updatedAt:
           type: string
           format: date-time
+    PushToken:
+      type: object
+      required:
+      - type
+      - token
+      - device
+      properties:
+        type:
+          type: string
+          enum:
+          - FCM
+          - APN
+          description: The push provider the token belongs to.
+        token:
+          type: string
+          description: The full push token string.
+        device:
+          type: object
+          properties:
+            device_id:
+              type: string
+            platform:
+              type: string
+            app_id:
+              type: string
     SendRequest:
       type: object
       description: A request to send (or schedule) a notification. `type` names the notification configured in your dashboard; `to` is the recipient; `parameters` are merged into the templates.
@@ -204,31 +221,14 @@ components:
       - CALL
       - PUSH
       - WEB_PUSH
-    PushToken:
-      type: object
-      required:
-      - type
-      - token
-      - device
-      properties:
-        type:
-          type: string
-          enum:
-          - FCM
-          - APN
-          description: The push provider the token belongs to.
-        token:
-          type: string
-          description: The full push token string.
-        device:
-          type: object
-          properties:
-            device_id:
-              type: string
-            platform:
-              type: string
-            app_id:
-              type: string
+  parameters:
+    TrackingId:
+      in: path
+      name: trackingId
+      required: true
+      schema:
+        type: string
+      description: The trackingId of a scheduled notification.
   securitySchemes:
     basicAuth:
       type: http

@@ -64,36 +64,6 @@ paths:
                 $ref: '#/components/schemas/QueryLogsResponse'
 components:
   schemas:
-    Channel:
-      type: string
-      enum:
-      - EMAIL
-      - INAPP_WEB
-      - SMS
-      - CALL
-      - PUSH
-      - WEB_PUSH
-    QueryLogsResponse:
-      type: object
-      properties:
-        logs:
-          type: array
-          items:
-            type: object
-            properties:
-              trackingId:
-                type: string
-              notificationId:
-                type: string
-              userId:
-                type: string
-              channel:
-                $ref: '#/components/schemas/Channel'
-              status:
-                type: string
-              date:
-                type: string
-                format: date-time
     QueryLogsRequest:
       type: object
       properties:
@@ -126,6 +96,36 @@ components:
           type: array
           items:
             type: string
+    QueryLogsResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            type: object
+            properties:
+              trackingId:
+                type: string
+              notificationId:
+                type: string
+              userId:
+                type: string
+              channel:
+                $ref: '#/components/schemas/Channel'
+              status:
+                type: string
+              date:
+                type: string
+                format: date-time
+    Channel:
+      type: string
+      enum:
+      - EMAIL
+      - INAPP_WEB
+      - SMS
+      - CALL
+      - PUSH
+      - WEB_PUSH
   securitySchemes:
     basicAuth:
       type: http

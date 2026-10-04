@@ -71,13 +71,6 @@ paths:
           description: subNotification deleted.
 components:
   parameters:
-    NotificationId:
-      in: path
-      name: notificationId
-      required: true
-      schema:
-        type: string
-      description: The ID of the notification in NotificationAPI.
     SubNotificationId:
       in: path
       name: subNotificationId
@@ -85,6 +78,13 @@ components:
       schema:
         type: string
       description: The subNotification (subcategory) identifier.
+    NotificationId:
+      in: path
+      name: notificationId
+      required: true
+      schema:
+        type: string
+      description: The ID of the notification in NotificationAPI.
   securitySchemes:
     basicAuth:
       type: http
