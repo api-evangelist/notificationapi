@@ -85,29 +85,17 @@ paths:
           description: In-app notifications updated.
 components:
   schemas:
-    InAppNotification:
+    InAppNotificationsResponse:
       type: object
       properties:
-        trackingId:
-          type: string
-        title:
-          type: string
-        url:
-          type: string
-        image:
-          type: string
-        date:
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/InAppNotification'
+        oldestReceived:
           type: string
           format: date-time
-        opened:
-          type: string
-          format: date-time
-        clicked:
-          type: string
-          format: date-time
-        archived:
-          type: string
-          format: date-time
+          description: Timestamp of the oldest returned notification, for pagination.
     InAppNotificationPatchRequest:
       type: object
       required:
@@ -141,17 +129,29 @@ components:
               format: date-time
             message:
               type: string
-    InAppNotificationsResponse:
+    InAppNotification:
       type: object
       properties:
-        notifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/InAppNotification'
-        oldestReceived:
+        trackingId:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        image:
+          type: string
+        date:
           type: string
           format: date-time
-          description: Timestamp of the oldest returned notification, for pagination.
+        opened:
+          type: string
+          format: date-time
+        clicked:
+          type: string
+          format: date-time
+        archived:
+          type: string
+          format: date-time
   parameters:
     UserId:
       in: path
