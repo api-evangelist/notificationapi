@@ -1,4 +1,4 @@
-# NotificationAPI (notificationapi)
+# NotificationAPI
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,176 +66,128 @@
 
 NotificationAPI is notifications infrastructure for developers. A single REST API and drop-in in-app inbox component send multi-channel notifications - email, SMS, mobile and web push, in-app inbox, automated voice call, and Slack - while managing user identities, per-user preferences and opt-outs, templates, scheduling, and delivery logs. All calls are scoped to a clientId and authenticated with HTTP Basic auth.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/notificationapi/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/notificationapi/refs/heads/main/apis.yml)
+**Areas:** Notification · Messaging · Email · SMS · Push · In-App Inbox
 
-## Tags
+## NotificationAPI on APIs.io
 
-- Notifications
-- Messaging
-- Email
-- SMS
-- Push
-- In-App Inbox
+Everything profiled for NotificationAPI is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/notificationapi/](https://apis.io/providers/notificationapi/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (7)
 
-- **Created:** 2026-07-01
-- **Modified:** 2026-07-01
+- [NotificationAPI In-App Inbox API](https://apis.io/apis/notificationapi/notificationapi-in-app-inbox-api/) — Read and update a user's in-app (INAPP_WEB) notifications.
+- [NotificationAPI Logs API](https://apis.io/apis/notificationapi/notificationapi-logs-api/) — Query delivery and event logs.
+- [NotificationAPI Notifications API](https://apis.io/apis/notificationapi/notificationapi-notifications-api/) — Configure notifications and their subNotifications.
+- [NotificationAPI Schedule API](https://apis.io/apis/notificationapi/notificationapi-schedule-api/) — Update or delete scheduled notifications.
+- [NotificationAPI Send API](https://apis.io/apis/notificationapi/notificationapi-send-api/) — Send and retract notifications across channels.
+- [NotificationAPI User Preferences API](https://apis.io/apis/notificationapi/notificationapi-user-preferences-api/) — Read and write per-user channel and opt-out preferences.
+- [NotificationAPI Users API](https://apis.io/apis/notificationapi/notificationapi-users-api/) — Identify and manage the users you notify.
 
-## APIs
+### Published properties
 
-### NotificationAPI Send API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Sends a notification to a user across the channels configured for the notification type - email, SMS, push, web push, in-app inbox, voice call, and Slack - with template parameters, per-channel overrides, and retract support via POST /sender and POST /sender/retract.
+#### Agentic access (1)
 
-- **Human URL:** [https://docs.notificationapi.com/reference/send](https://docs.notificationapi.com/reference/send)
-- **Base URL:** `https://api.notificationapi.com/{clientId}`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Notificationapi Agentic Access](https://apis.io/agentic-access/notificationapi/notificationapi-agentic-access/)
 
-- Send
-- Notifications
-- Multi-Channel
+#### Collections (8)
 
-#### Properties
+Postman and Open Collection request collections.
 
-- [Documentation](https://docs.notificationapi.com/reference/send)
-- [API Reference](https://docs.notificationapi.com/reference/api-reference)
-- [OpenAPI](openapi/notificationapi-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/notificationapi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/notificationapi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [NotificationAPI REST API](https://apis.io/collections/notificationapi/open-notificationapi/)
+- [NotificationAPI REST In-App Inbox API](https://apis.io/collections/notificationapi/open-notificationapi-in-app-inbox-api/)
+- [NotificationAPI REST In-App Inbox Logs API](https://apis.io/collections/notificationapi/open-notificationapi-logs-api/)
+- [NotificationAPI REST In-App Inbox Notifications API](https://apis.io/collections/notificationapi/open-notificationapi-notifications-api/)
+- [NotificationAPI REST In-App Inbox Schedule API](https://apis.io/collections/notificationapi/open-notificationapi-schedule-api/)
+- [NotificationAPI REST In-App Inbox Send API](https://apis.io/collections/notificationapi/open-notificationapi-send-api/)
+- [NotificationAPI REST In-App Inbox User Preferences API](https://apis.io/collections/notificationapi/open-notificationapi-user-preferences-api/)
+- [NotificationAPI REST In-App Inbox Users API](https://apis.io/collections/notificationapi/open-notificationapi-users-api/)
 
-### NotificationAPI Schedule API
+#### Security (2)
 
-Schedules notifications for future delivery by passing an ISO 8601 schedule value to the Send API, then updates or cancels them by trackingId via PATCH and DELETE /schedule/{trackingId}.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://docs.notificationapi.com/reference/schedule](https://docs.notificationapi.com/reference/schedule)
-- **Base URL:** `https://api.notificationapi.com/{clientId}`
+- [Notificationapi Authentication](https://apis.io/security/notificationapi/notificationapi-authentication/)
+- [Notificationapi Domain Security](https://apis.io/security/notificationapi/notificationapi-domain-security/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Schedule
-- Notifications
-- Delayed Delivery
+Published plans, tiers and prices.
 
-#### Properties
+- [Notificationapi Plans Pricing](https://apis.io/plans/notificationapi/notificationapi-plans-pricing/)
 
-- [Documentation](https://docs.notificationapi.com/reference/schedule)
-- [OpenAPI](openapi/notificationapi-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/notificationapi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/notificationapi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### NotificationAPI Users Identify API
+Published request limits.
 
-Creates or updates the users you notify with their contact identifiers - email, phone number, push and web-push tokens, timezone, and Slack channel - via POST /users/{userId}, authenticated with a per-user HMAC signature.
+- [Notificationapi Rate Limits](https://apis.io/rate-limits/notificationapi/notificationapi-rate-limits/)
 
-- **Human URL:** [https://docs.notificationapi.com/reference/identify-user](https://docs.notificationapi.com/reference/identify-user)
-- **Base URL:** `https://api.notificationapi.com/{clientId}`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Users
-- Identify
-- Contacts
+- [Notificationapi Finops](https://apis.io/finops/notificationapi/notificationapi-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://docs.notificationapi.com/reference/identify-user)
-- [OpenAPI](openapi/notificationapi-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/notificationapi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/notificationapi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### NotificationAPI User Preferences API
-
-Sets and deletes per-user, per-notification, per-channel delivery preferences and opt-outs - off/instant/hourly/daily/weekly/monthly - via POST /user_preferences/{userId} and DELETE /users/{userId}/preferences.
-
-- **Human URL:** [https://docs.notificationapi.com/reference/set-user-preferences](https://docs.notificationapi.com/reference/set-user-preferences)
-- **Base URL:** `https://api.notificationapi.com/{clientId}`
-
-#### Tags
-
-- Preferences
-- Opt-Out
-- Subscriptions
-
-#### Properties
-
-- [Documentation](https://docs.notificationapi.com/reference/set-user-preferences)
-- [OpenAPI](openapi/notificationapi-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/notificationapi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/notificationapi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### NotificationAPI Notifications Config API
-
-Configures notifications and their subNotifications - independently subscribable subcategories such as per-project or per-topic channels - via PUT and DELETE /notifications/{notificationId}/subNotifications/{subNotificationId}.
-
-- **Human URL:** [https://docs.notificationapi.com/reference/create-sub-notification](https://docs.notificationapi.com/reference/create-sub-notification)
-- **Base URL:** `https://api.notificationapi.com/{clientId}`
-
-#### Tags
-
-- Notifications
-- Configuration
-- SubNotifications
-
-#### Properties
-
-- [Documentation](https://docs.notificationapi.com/reference/create-sub-notification)
-- [OpenAPI](openapi/notificationapi-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/notificationapi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/notificationapi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### NotificationAPI In-App Inbox API
-
-Powers the drop-in in-app inbox component - reads a user's INAPP_WEB notifications with pagination and marks them opened, clicked, archived, actioned, or replied via GET and PATCH /users/{userId}/notifications/INAPP_WEB.
-
-- **Human URL:** [https://docs.notificationapi.com/reference/in-app-notifications](https://docs.notificationapi.com/reference/in-app-notifications)
-- **Base URL:** `https://api.notificationapi.com/{clientId}`
-
-#### Tags
-
-- In-App Inbox
-- Notifications
-- Read State
-
-#### Properties
-
-- [Documentation](https://docs.notificationapi.com/reference/in-app-notifications)
-- [OpenAPI](openapi/notificationapi-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/notificationapi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/notificationapi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### NotificationAPI Logs API
-
-Queries delivery and event logs filtered by date range, notification, channel, user, status, and trackingId via POST /logs/query.
-
-- **Human URL:** [https://docs.notificationapi.com/reference/query-logs](https://docs.notificationapi.com/reference/query-logs)
-- **Base URL:** `https://api.notificationapi.com/{clientId}`
-
-#### Tags
-
-- Logs
-- Analytics
-- Delivery
-
-#### Properties
-
-- [Documentation](https://docs.notificationapi.com/reference/query-logs)
-- [OpenAPI](openapi/notificationapi-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/notificationapi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/notificationapi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/notificationapi-com)
-- [LinkedIn](https://www.linkedin.com/company/notificationapi)
 - [Website](https://www.notificationapi.com/)
 - [Documentation](https://docs.notificationapi.com)
-- [Plans](plans/notificationapi-plans-pricing.yml)
-- [Rate Limits](rate-limits/notificationapi-rate-limits.yml)
-- [Fin Ops](finops/notificationapi-finops.yml)
+- [Blog](https://www.pingram.io/blog)
+- [GitHub](https://github.com/notificationapi-com)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 26.2** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 50.8 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 31.0 |
+| Access clarity | 7.9 |
+
+**Agent readiness 22.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.0** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/notificationapi/](https://apis.io/providers/notificationapi/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for NotificationAPI: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/notificationapi/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
